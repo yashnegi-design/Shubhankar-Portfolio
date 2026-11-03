@@ -1,0 +1,8 @@
+# Backup and temp files
+*.bak
+__pycache__/
+*.pyc
+
+# Local scripts
+update_hero_crosshair.py
+inspect_preloader.py
