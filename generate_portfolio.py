@@ -1677,28 +1677,34 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             font-size: 0.76rem;
         }
 
-        /* Toggle Terminal Floating Trigger Pill */
+        /* Floating "enter matrix" Pill Button */
         .terminal-floating-pill {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 22px;
+            right: 22px;
             z-index: 899;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 8px 14px;
-            border: 1px solid var(--line-strong);
-            background: var(--bg-raised);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            padding: 8px 18px;
+            border: 1px solid var(--accent);
+            background: rgba(7, 8, 10, 0.92);
+            color: var(--accent-text);
             border-radius: 999px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-            display: none;
+            box-shadow: 0 0 16px rgba(0, 255, 102, 0.25);
+            display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.22s ease;
+            backdrop-filter: blur(8px);
         }
 
         .terminal-floating-pill:hover {
-            border-color: var(--ink);
+            background: var(--accent);
+            color: var(--accent-ink);
+            box-shadow: 0 0 24px rgba(0, 255, 102, 0.55);
             transform: translateY(-2px);
         }
 
@@ -2336,10 +2342,9 @@ Type 'help' or click the chips above to run commands.</div>
         </div>
     </div>
 
-    <!-- Floating Terminal Trigger (when docked terminal is closed) -->
-    <button class="terminal-floating-pill" id="openTerminalPill">
-        <i class="fa-solid fa-terminal" style="color:var(--accent-text);"></i>
-        <span>&gt;_ REPL Terminal</span>
+    <!-- Floating "enter matrix" Pill Button -->
+    <button class="terminal-floating-pill" id="openTerminalPill" title="Toggle Fullscreen Matrix Mode">
+        <span>enter matrix</span>
     </button>
 
     <!-- ===== COMMAND PALETTE OVERLAY (⌘K) ===== -->
@@ -3164,10 +3169,8 @@ curl -f -s -o /dev/null http://localhost:8080/enterprise-portal/health
             });
 
             openPill.addEventListener('click', () => {
-                terminal.classList.remove('is-hidden');
-                openPill.style.display = 'none';
-                if (isMin) toggleMin();
-                input.focus();
+                playTactileClick(1200, 0.02);
+                toggleMatrixRain();
             });
 
             function executeCommand(rawCmd) {
