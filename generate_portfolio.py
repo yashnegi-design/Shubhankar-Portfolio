@@ -698,6 +698,18 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         }
 
         /* ===== HERO MATRIX CODING VIBES ===== */
+        .hero {
+            padding-top: calc(4.5rem + clamp(48px, 8vw, 110px));
+            padding-bottom: clamp(60px, 9vw, 130px);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(32px, 5vw, 64px);
+            min-height: 94vh;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
         #matrixHeroCanvas {
             position: absolute;
             inset: 0;
@@ -705,139 +717,77 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.32;
+            opacity: 0.30;
             transition: opacity 0.5s ease;
         }
 
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.12fr 0.88fr;
-            gap: clamp(24px, 4vw, 56px);
-            align-items: center;
+        .hero > *:not(#matrixHeroCanvas) {
             position: relative;
             z-index: 2;
         }
 
-        @media (max-width: 980px) {
-            .hero-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Hero Interactive IDE Code Window */
-        .hero-code-window {
-            background: var(--bg-surface);
-            border: 1px solid var(--line-strong);
-            border-radius: 8px;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
-            overflow: hidden;
-            font-family: var(--font-mono);
-            position: relative;
-        }
-
-        .code-window-header {
-            background: var(--bg-raised);
-            border-bottom: 1px solid var(--line);
-            padding: 10px 14px;
+        .hero__title {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: clamp(16px, 2.5vw, 32px);
         }
 
-        .window-dots {
-            display: flex;
-            gap: 6px;
-            align-items: center;
+        .hero__human {
+            display: block;
+            margin-left: -0.05em;
+            color: var(--ink);
         }
 
-        .window-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .dot-red { background: #ff5f56; }
-        .dot-yellow { background: #ffbd2e; }
-        .dot-green { background: #27c93f; }
-
-        .code-window-tabs {
-            display: flex;
-            gap: 4px;
-        }
-
-        .code-tab {
-            font-size: 0.72rem;
-            padding: 3px 10px;
-            border-radius: 4px;
+        .hero__machine {
+            max-width: 40ch;
             color: var(--muted);
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            font-weight: 400;
+            line-height: 1.25;
+            min-height: 3.8em;
+            transition: color var(--dur-1) var(--ease-out);
         }
 
-        .code-tab:hover { color: var(--ink); }
+        .hero__machine .highlight {
+            color: var(--ink);
+        }
 
-        .code-tab.is-active {
+        .hero__notes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem 2.5rem;
+            align-items: center;
+        }
+
+        .hero__notes .note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stream-btn {
+            font-family: var(--font-mono);
+            font-size: var(--step--1);
             color: var(--accent-text);
-            background: var(--bg-surface);
-            border-color: var(--line);
-            font-weight: 500;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            transition: opacity var(--dur-1);
         }
 
-        .code-window-body {
-            padding: 16px;
-            font-size: 0.78rem;
-            line-height: 1.7;
-            overflow-x: auto;
-            background: var(--bg-surface);
-            min-height: 230px;
-        }
+        .stream-btn:hover { opacity: 0.75; }
 
-        .code-window-footer {
+        .hero__foot {
+            border-top: 1px solid var(--line);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 8px 14px;
-            border-top: 1px solid var(--line);
-            background: var(--bg-raised);
-            font-size: 0.72rem;
-            color: var(--muted);
+            align-items: flex-end;
+            gap: 2rem;
+            padding-top: 1.75rem;
+            flex-wrap: wrap;
         }
 
-        .run-code-btn {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            padding: 4px 11px;
-            border-radius: 4px;
-            background: var(--ink);
-            color: var(--bg);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            border: none;
-            transition: all 0.2s ease;
-        }
-
-        .run-code-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .code-output-banner {
-            display: none;
-            padding: 8px 14px;
-            background: var(--bg-raised);
-            border-top: 1px dashed var(--line);
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--success);
-        }
-
-        .hero > *:not(#codingCanvas) {
-            position: relative;
-            z-index: 2;
-        }
+        .hero__intro { max-width: 52ch; }
+        .hero__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 
         .hero__top {
             border-top: 1px solid var(--line-strong);
@@ -1946,71 +1896,28 @@ HTML_CONTENT = r'''<!DOCTYPE html>
 
         <!-- ================= HERO ================= -->
         <section class="hero wrap" id="hero">
-            <!-- Dynamic Coding Canvas (Syntax & Token Matrix) -->
+            <!-- Dynamic Matrix Digital Rain Canvas -->
             <canvas id="matrixHeroCanvas"></canvas>
 
-            <div class="hero__top note">
+            <div class="hero__top note fade-child">
                 <span>Shubhankar Negi · Full Stack Developer</span>
                 <span>Base camp · Pune &amp; Almora · 29.59° N, 79.65° E</span>
                 <span class="note--success">● Active @ Larsen &amp; Toubro (L&amp;T)</span>
             </div>
 
-            <div class="hero-grid">
-                <!-- Left: Editorial Headline & Machine Tokens -->
-                <div class="hero__title fade-child">
-                    <h1 class="hero__human display">I build software.</h1>
-                    <p class="hero__machine h2" id="streamTarget">
-                        Full Stack Developer at <span class="highlight">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.
+            <div class="hero__title fade-child">
+                <h1 class="hero__human display">I build software.</h1>
+                <p class="hero__machine h2" id="streamTarget">
+                    Full Stack Developer at <span class="highlight">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.
+                </p>
+                <div class="hero__notes">
+                    <p class="note"><span class="note--accent">●</span> human · engineered with precision</p>
+                    <p class="note">
+                        <span class="note--accent">◆</span> machine · 
+                        <span id="tokenMetric">24</span> tokens · 
+                        <span id="latencyMetric">140ms</span> · 
+                        <button class="stream-btn" id="streamCycleBtn">↺ regenerate focus</button>
                     </p>
-                    <div class="hero__notes">
-                        <p class="note"><span class="note--accent">●</span> human · engineered with precision</p>
-                        <p class="note">
-                            <span class="note--accent">◆</span> machine · 
-                            <span id="tokenMetric">24</span> tokens · 
-                            <span id="latencyMetric">140ms</span> · 
-                            <button class="stream-btn" id="streamCycleBtn">↺ regenerate focus</button>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Right: Interactive Developer IDE Code Window -->
-                <div class="hero-code-window fade-child">
-                    <div class="code-window-header">
-                        <div class="window-dots">
-                            <span class="window-dot dot-red"></span>
-                            <span class="window-dot dot-yellow"></span>
-                            <span class="window-dot dot-green"></span>
-                        </div>
-                        <div class="code-window-tabs">
-                            <button class="code-tab is-active" data-htab="java">Shubhankar.java</button>
-                            <button class="code-tab" data-htab="python">Vision.py</button>
-                            <button class="code-tab" data-htab="sql">Database.sql</button>
-                        </div>
-                    </div>
-                    <div class="code-window-body">
-                        <pre><code id="heroCodeSnippet"><span class="cm">// Larsen &amp; Toubro Enterprise Core</span>
-<span class="kw">public class</span> Shubhankar <span class="kw">implements</span> FullStackDeveloper {
-    <span class="kw">private final</span> String role = <span class="st">"Full Stack Developer"</span>;
-    <span class="kw">private final</span> String company = <span class="st">"Larsen &amp; Toubro, Pune"</span>;
-    <span class="kw">private final</span> String[] stack = {
-        <span class="st">"Java"</span>, <span class="st">"Spring Boot"</span>, <span class="st">"Python"</span>, 
-        <span class="st">"OpenCV"</span>, <span class="st">"MySQL"</span>, <span class="st">"REST APIs"</span>
-    };
-
-    <span class="kw">public</span> Status <span class="fn">deployReliableServices</span>() {
-        <span class="kw">return</span> Status.PRODUCTION_NOMINAL;
-    }
-}</code></pre>
-                    </div>
-                    <div class="code-output-banner" id="codeOutputBanner">
-                        &gt; [COMPILED]: 0 errors, 0 warnings · Executed in 12ms · 200 OK
-                    </div>
-                    <div class="code-window-footer">
-                        <span>git:(main) · UTF-8 · Java 21</span>
-                        <button class="run-code-btn" id="heroRunCodeBtn">
-                            <i class="fa-solid fa-play" style="font-size:0.65rem;"></i> Run Snippet
-                        </button>
-                    </div>
                 </div>
             </div>
 
@@ -2691,66 +2598,7 @@ Type 'help' or click the chips above to run commands.</div>
 
             setInterval(renderMatrix, 40);
 
-            // Hero IDE Tabs and Run Button
-            const heroTabs = document.querySelectorAll('.code-tab');
-            const heroSnippet = document.getElementById('heroCodeSnippet');
-            const runBtn = document.getElementById('heroRunCodeBtn');
-            const outputBanner = document.getElementById('codeOutputBanner');
-
-            const heroCodes = {
-                java: `<span class="cm">// Larsen &amp; Toubro Enterprise Core</span>
-<span class="kw">public class</span> Shubhankar <span class="kw">implements</span> FullStackDeveloper {
-    <span class="kw">private final</span> String role = <span class="st">"Full Stack Developer"</span>;
-    <span class="kw">private final</span> String company = <span class="st">"Larsen &amp; Toubro, Pune"</span>;
-    <span class="kw">private final</span> String[] stack = {
-        <span class="st">"Java"</span>, <span class="st">"Spring Boot"</span>, <span class="st">"Python"</span>, 
-        <span class="st">"OpenCV"</span>, <span class="st">"MySQL"</span>, <span class="st">"REST APIs"</span>
-    };
-
-    <span class="kw">public</span> Status <span class="fn">deployReliableServices</span>() {
-        <span class="kw">return</span> Status.PRODUCTION_NOMINAL;
-    }
-}`,
-                python: `<span class="cm"># Computer Vision Real-Time Pipeline</span>
-<span class="kw">import</span> cv2
-<span class="kw">import</span> numpy <span class="kw">as</span> np
-
-<span class="kw">def</span> <span class="fn">convert_to_sketch</span>(frame_bgr):
-    gray = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)
-    inv = cv2.bitwise_not(gray)
-    blur = cv2.GaussianBlur(inv, (21, 21), sigmaX=0)
-    <span class="cm"># Color dodge division yielding 90% sketch accuracy</span>
-    <span class="kw">return</span> cv2.divide(gray, 255 - blur, scale=256.0)`,
-                sql: `<span class="cm">-- Enterprise Evaluation Schema</span>
-<span class="kw">CREATE TABLE</span> lnt_telemetry (
-    node_id <span class="kw">VARCHAR</span>(32) <span class="kw">PRIMARY KEY</span>,
-    cluster_region <span class="kw">VARCHAR</span>(32) <span class="kw">DEFAULT</span> <span class="st">'Pune_Cluster'</span>,
-    status <span class="kw">ENUM</span>(<span class="st">'ACTIVE'</span>, <span class="st">'DEPLOYING'</span>) <span class="kw">NOT NULL</span>,
-    p99_latency_ms <span class="kw">DECIMAL</span>(5,2) <span class="kw">DEFAULT</span> 14.20,
-    created_at <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>
-) <span class="kw">ENGINE</span>=InnoDB <span class="kw">DEFAULT CHARSET</span>=utf8mb4;`
-            };
-
-            heroTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    playTactileClick(1100, 0.02);
-                    heroTabs.forEach(t => t.classList.remove('is-active'));
-                    tab.classList.add('is-active');
-                    const lang = tab.dataset.htab;
-                    heroSnippet.innerHTML = heroCodes[lang];
-                    outputBanner.style.display = 'none';
-                });
-            });
-
-            runBtn.addEventListener('click', () => {
-                playTactileClick(1300, 0.03);
-                outputBanner.style.display = 'block';
-                outputBanner.innerHTML = '&gt; Initializing runtime container...';
-                setTimeout(() => {
-                    outputBanner.innerHTML = '&gt; [COMPILED]: 0 errors, 0 warnings · Executed in 12ms · 200 OK';
-                }, 280);
-            });
-        })();
+            })();
 
         // 7. Interactive Machine Token Typing Streamer
         (function initTokenStreamer() {
