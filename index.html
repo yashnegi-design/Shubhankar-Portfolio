@@ -110,152 +110,140 @@
         button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
         ::selection { background: var(--ink); color: var(--bg); }
 
-        /* ===== 1. COMPILE INTRO PRELOADER (ARCHITECTURAL HUD) ===== */
-        .preloader {
+        /* ===== 1. RETRO CRT TERMINAL LOADER (VIDEO INSPIRED) ===== */
+        .crt-loader {
             position: fixed;
             inset: 0;
-            background: var(--bg);
+            background: #080c09;
             z-index: 99999;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: var(--gutter);
-            font-family: var(--font-mono);
-            transition: opacity 0.7s var(--ease-in-out), transform 0.7s var(--ease-in-out), visibility 0.7s;
-        }
-
-        .preloader.is-done {
-            opacity: 0;
-            transform: translateY(-24px);
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .preloader__meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: var(--step--1);
-            color: var(--muted);
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 0.85rem;
-        }
-
-        .preloader__center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
-            gap: 1.75rem;
-            max-width: 620px;
-            width: 100%;
-            margin-inline: auto;
-        }
-
-        .preloader__mark {
-            width: 96px;
-            height: 56px;
-            color: var(--ink);
-            filter: drop-shadow(0 0 12px var(--accent-dim));
-        }
-
-        .preloader__mark path {
-            stroke-dasharray: 120;
-            stroke-dashoffset: 120;
-            animation: drawMonogram 1.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-        }
-
-        @keyframes drawMonogram {
-            to { stroke-dashoffset: 0; }
-        }
-
-        /* Terminal boot log window inside preloader */
-        .preloader__console {
-            width: 100%;
-            background: var(--bg-surface);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 14px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: var(--step--1);
-            line-height: 1.6;
-            min-height: 120px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .preloader__log-line {
-            display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--muted);
-            opacity: 0;
-            transform: translateY(4px);
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        .preloader__log-line.active {
-            opacity: 1;
-            transform: translateY(0);
-            color: var(--ink);
-        }
-
-        .preloader__log-line .tag {
-            color: var(--accent-text);
-            font-size: 0.72rem;
-            padding: 1px 6px;
-            background: var(--accent-dim);
-            border-radius: 3px;
-        }
-
-        /* Progress Bar */
-        .preloader__progress-bar-wrap {
-            width: 100%;
-            height: 4px;
-            background: var(--line);
-            border-radius: 2px;
+            font-family: var(--font-mono);
+            color: #39ff14;
             overflow: hidden;
+            transition: opacity 0.55s cubic-bezier(0.85, 0, 0.15, 1), transform 0.55s cubic-bezier(0.85, 0, 0.15, 1), visibility 0.55s;
+        }
+
+        .crt-loader.is-done {
+            opacity: 0;
+            transform: scale(1.04);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        /* CRT Horizontal Scanlines Overlay */
+        .crt-scanlines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
+            background-size: 100% 4px;
+            z-index: 10;
+            opacity: 0.85;
+        }
+
+        /* CRT Vignette & Screen Curvature */
+        .crt-vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.95);
+            z-index: 11;
+        }
+
+        /* CRT Terminal Box */
+        .crt-terminal-box {
             position: relative;
+            z-index: 12;
+            max-width: 680px;
+            width: 90%;
+            background: rgba(10, 16, 12, 0.95);
+            border: 1px solid rgba(57, 255, 20, 0.35);
+            border-radius: 8px;
+            box-shadow: 0 0 45px rgba(57, 255, 20, 0.18), inset 0 0 35px rgba(0, 0, 0, 0.85);
+            overflow: hidden;
         }
 
-        .preloader__progress-bar {
-            height: 100%;
-            width: 0%;
-            background: var(--accent);
-            transition: width 0.1s linear;
-        }
-
-        .preloader__foot {
+        .crt-meta-bar {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            font-size: var(--step--1);
-            color: var(--muted);
-            border-top: 1px solid var(--line);
-            padding-top: 0.85rem;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+            font-size: 0.74rem;
+            color: rgba(57, 255, 20, 0.7);
+            background: rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.05em;
         }
 
-        .preloader__count {
-            color: var(--accent-text);
-            font-weight: 600;
-            font-size: var(--step-0);
-        }
-
-        .preloader__skip-btn {
+        .crt-skip-btn {
             font-family: var(--font-mono);
-            font-size: var(--step--1);
-            color: var(--muted);
-            background: var(--bg-raised);
-            border: 1px solid var(--line);
+            font-size: 0.72rem;
+            color: #39ff14;
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.35);
             padding: 3px 10px;
-            border-radius: 4px;
+            border-radius: 3px;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .preloader__skip-btn:hover {
-            color: var(--ink);
-            border-color: var(--ink);
+        .crt-skip-btn:hover {
+            background: rgba(57, 255, 20, 0.25);
+            border-color: #39ff14;
+        }
+
+        .crt-screen {
+            padding: 26px 28px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+            line-height: 1.6;
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 8px rgba(57, 255, 20, 0.75), 0 0 16px rgba(57, 255, 20, 0.35);
+        }
+
+        .crt-line {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            color: #39ff14;
+        }
+
+        .crt-prompt {
+            color: #39ff14;
+            margin-right: 8px;
+            user-select: none;
+            font-weight: 700;
+        }
+
+        .crt-cursor {
+            display: inline-block;
+            color: #39ff14;
+            animation: crtBlink 0.6s infinite step-end;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+
+        @keyframes crtBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .crt-footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            border-top: 1px solid rgba(57, 255, 20, 0.15);
+            font-size: 0.72rem;
+            color: rgba(57, 255, 20, 0.55);
+            background: rgba(0, 0, 0, 0.5);
         }
 
         /* ===== BLUEPRINT WIREFRAME GRID OVERLAY ===== */
@@ -670,113 +658,144 @@
             overflow: hidden;
         }
 
-        /* Dynamic Interactive Canvas Terrain (Topographic Contours) */
-        #heroTerrainCanvas {
+        /* ===== HERO CODING VIBES ===== */
+        #codingCanvas {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.88;
+            opacity: 0.55;
             transition: opacity 0.5s ease;
         }
 
-        /* ===== HERO CROSSHAIR AXIS HUD (PIERGORELLI SIGNATURE) ===== */
-        .hero-crosshair {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 4;
-            opacity: 0;
-            transition: opacity 0.2s ease;
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.12fr 0.88fr;
+            gap: clamp(24px, 4vw, 56px);
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 980px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hero Interactive IDE Code Window */
+        .hero-code-window {
+            background: var(--bg-surface);
+            border: 1px solid var(--line-strong);
+            border-radius: 8px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
             overflow: hidden;
-        }
-
-        .hero-crosshair.is-active {
-            opacity: 1;
-        }
-
-        body.in-hero-crosshair .tech-cursor,
-        body.in-hero-crosshair .tech-cursor-follower {
-            opacity: 0 !important;
-        }
-
-        /* Horizontal Full-width Axis Line */
-        .crosshair-axis-x {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.22);
-            pointer-events: none;
-            will-change: transform;
-        }
-
-        [data-theme="light"] .crosshair-axis-x {
-            background: rgba(14, 14, 13, 0.2);
-        }
-
-        /* Vertical Full-height Axis Line */
-        .crosshair-axis-y {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: 1px;
-            background: rgba(255, 255, 255, 0.22);
-            pointer-events: none;
-            will-change: transform;
-        }
-
-        [data-theme="light"] .crosshair-axis-y {
-            background: rgba(14, 14, 13, 0.2);
-        }
-
-        /* Center Blue Square Reticle Target */
-        .crosshair-target {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 12px;
-            height: 12px;
-            background: #508aff;
-            border: 1px solid rgba(255, 255, 255, 0.85);
-            border-radius: 2px;
-            pointer-events: none;
-            box-shadow: 0 0 14px rgba(80, 138, 255, 0.6);
-            will-change: transform;
-        }
-
-        [data-theme="light"] .crosshair-target {
-            background: #2f5bff;
-            border-color: rgba(255, 255, 255, 0.95);
-        }
-
-        /* Coordinates Label: X 1228 · Y 0340 */
-        .crosshair-label {
-            position: absolute;
-            top: 0;
-            left: 0;
             font-family: var(--font-mono);
-            font-size: 0.82rem;
+            position: relative;
+        }
+
+        .code-window-header {
+            background: var(--bg-raised);
+            border-bottom: 1px solid var(--line);
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .window-dots {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .window-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .code-window-tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .code-tab {
+            font-size: 0.72rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            color: var(--muted);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .code-tab:hover { color: var(--ink); }
+
+        .code-tab.is-active {
+            color: var(--accent-text);
+            background: var(--bg-surface);
+            border-color: var(--line);
             font-weight: 500;
-            letter-spacing: 0.05em;
-            color: #ffffff;
-            pointer-events: none;
-            user-select: none;
-            white-space: nowrap;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(0, 0, 0, 0.6);
-            will-change: transform;
         }
 
-        [data-theme="light"] .crosshair-label {
-            color: #0e0e0d;
-            text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
+        .code-window-body {
+            padding: 16px;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            background: var(--bg-surface);
+            min-height: 230px;
         }
 
-        .hero > *:not(#heroTerrainCanvas) {
+        .code-window-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            border-top: 1px solid var(--line);
+            background: var(--bg-raised);
+            font-size: 0.72rem;
+            color: var(--muted);
+        }
+
+        .run-code-btn {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 4px 11px;
+            border-radius: 4px;
+            background: var(--ink);
+            color: var(--bg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .run-code-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .code-output-banner {
+            display: none;
+            padding: 8px 14px;
+            background: var(--bg-raised);
+            border-top: 1px dashed var(--line);
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--success);
+        }
+
+        .hero > *:not(#codingCanvas) {
             position: relative;
             z-index: 2;
         }
@@ -1785,40 +1804,25 @@
 </head>
 <body>
 
-    <!-- ===== 1. COMPILE INTRO PRELOADER (ARCHITECTURAL BOOT) ===== -->
-    <div class="preloader" id="compilePreloader" aria-hidden="true">
-        <div class="preloader__meta">
-            <span>boot://shubhankar.dev · kernel.init</span>
-            <span class="note--accent">REV. 2026.3 // PROD_RELEASE</span>
-            <button class="preloader__skip-btn" id="skipPreloaderBtn">Skip [ESC]</button>
-        </div>
-
-        <div class="preloader__center">
-            <!-- Animated Monogram -->
-            <svg class="preloader__mark" viewBox="0 0 68 40" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M 22 10 C 12 10 8 16 14 21 C 22 26 22 32 10 32"></path>
-                <path d="M 38 32 V 10 L 56 32 V 10"></path>
-                <circle cx="62" cy="32" r="2.2" fill="currentColor"></circle>
-            </svg>
-
-            <!-- Real-time kernel boot log stream -->
-            <div class="preloader__console" id="preloaderConsole">
-                <div class="preloader__log-line active"><span class="tag">[0.05s]</span><span>KERNEL: Initializing Shubhankar Negi runtime engine...</span></div>
-                <div class="preloader__log-line" id="log2"><span class="tag">[0.35s]</span><span>AUTH: Larsen &amp; Toubro enterprise node connected (Pune)...</span></div>
-                <div class="preloader__log-line" id="log3"><span class="tag">[0.75s]</span><span>STACK: JVM 21, Spring Boot, MySQL pool &amp; OpenCV 4.x mounted.</span></div>
-                <div class="preloader__log-line" id="log4"><span class="tag">[1.20s]</span><span>SHADERS: Himalayan contour canvas &amp; REPL terminal ready.</span></div>
-                <div class="preloader__log-line" id="log5"><span class="tag">[1.50s]</span><span>SYSTEM: All subsystems nominal. Hydrating DOM.</span></div>
+    <!-- ===== 1. RETRO CRT TERMINAL LOADER (VIDEO SAMPLE INSPIRED) ===== -->
+    <div class="crt-loader" id="crtLoader" aria-hidden="true">
+        <div class="crt-scanlines"></div>
+        <div class="crt-vignette"></div>
+        <div class="crt-terminal-box">
+            <div class="crt-meta-bar">
+                <span>TERMINAL_SESSION // TTY1 · PORT: 3000 · REV 2026.3</span>
+                <button class="crt-skip-btn" id="crtSkipBtn">SKIP [ESC]</button>
             </div>
-
-            <!-- Precision Progress Bar -->
-            <div class="preloader__progress-bar-wrap">
-                <div class="preloader__progress-bar" id="preloaderProgressBar"></div>
+            <div class="crt-screen">
+                <div class="crt-line" id="crtLine1"><span class="crt-prompt">&gt; </span><span class="crt-text" id="crtText1"></span><span class="crt-cursor" id="crtCursor1">_</span></div>
+                <div class="crt-line" id="crtLine2" style="display:none;"><span class="crt-prompt">&gt; </span><span class="crt-text" id="crtText2"></span><span class="crt-cursor" id="crtCursor2">_</span></div>
+                <div class="crt-line" id="crtLine3" style="display:none;"><span class="crt-prompt">&gt; </span><span class="crt-text" id="crtText3"></span><span class="crt-cursor" id="crtCursor3">_</span></div>
+                <div class="crt-line" id="crtLine4" style="display:none;"><span class="crt-prompt">&gt; </span><span class="crt-text" id="crtText4"></span><span class="crt-cursor" id="crtCursor4">_</span></div>
             </div>
-        </div>
-
-        <div class="preloader__foot">
-            <span>Full Stack Developer @ L&amp;T · Pune &amp; Almora</span>
-            <span class="preloader__count" id="preloaderPercent">00%</span>
+            <div class="crt-footer-bar">
+                <span>BAUD: 115200 · UTF-8</span>
+                <span id="crtStatusNote">COMPILING RUNTIME...</span>
+            </div>
         </div>
     </div>
 
@@ -1903,39 +1907,72 @@
 
         <!-- ================= HERO ================= -->
         <section class="hero wrap" id="hero">
-            <!-- Dynamic Interactive Topographic Contour Canvas -->
-            <canvas id="heroTerrainCanvas"></canvas>
-
-            <!-- Crosshair Axis HUD Overlay -->
-            <div class="hero-crosshair" id="heroCrosshair" aria-hidden="true">
-                <div class="crosshair-axis-x" id="crosshairAxisX"></div>
-                <div class="crosshair-axis-y" id="crosshairAxisY"></div>
-                <div class="crosshair-target" id="crosshairTarget"></div>
-                <div class="crosshair-label" id="crosshairLabel">X 0000 · Y 0000</div>
-            </div>
+            <!-- Dynamic Coding Canvas (Syntax & Token Matrix) -->
+            <canvas id="codingCanvas"></canvas>
 
             <div class="hero__top note">
                 <span data-scramble>Shubhankar Negi · Full Stack Developer</span>
-                <span id="terrainCoords">Base camp · Pune &amp; Almora · 29.59° N, 79.65° E</span>
+                <span>Base camp · Pune &amp; Almora · 29.59° N, 79.65° E</span>
                 <span class="note--success">● Active @ Larsen &amp; Toubro (L&amp;T)</span>
             </div>
 
-            <div class="hero__title">
-                <h1 class="hero__human display" data-scramble>I build software.</h1>
-                <p class="hero__machine h2" id="streamTarget">
-                    Full Stack Developer at <span class="highlight">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.
-                </p>
-            </div>
+            <div class="hero-grid">
+                <!-- Left: Editorial Headline & Machine Tokens -->
+                <div class="hero__title">
+                    <h1 class="hero__human display" data-scramble>I build software.</h1>
+                    <p class="hero__machine h2" id="streamTarget">
+                        Full Stack Developer at <span class="highlight">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.
+                    </p>
+                    <div class="hero__notes">
+                        <p class="note"><span class="note--accent">●</span> human · engineered with precision</p>
+                        <p class="note">
+                            <span class="note--accent">◆</span> machine · 
+                            <span id="tokenMetric">24</span> tokens · 
+                            <span id="latencyMetric">140ms</span> · 
+                            <button class="stream-btn" id="streamCycleBtn">↺ regenerate focus</button>
+                        </p>
+                    </div>
+                </div>
 
-            <div class="hero__notes">
-                <p class="note"><span class="note--accent">●</span> human · engineered with precision</p>
-                <p class="note">
-                    <span class="note--accent">◆</span> machine · 
-                    <span id="tokenMetric">24</span> tokens · 
-                    <span id="latencyMetric">140ms</span> · 
-                    <button class="stream-btn" id="streamCycleBtn">↺ regenerate focus</button>
-                </p>
-                <p class="note" id="elevationDisplay"><span class="note--accent">▲</span> terrain · elevation 2,420m · hover to perturb</p>
+                <!-- Right: Interactive Developer IDE Code Window -->
+                <div class="hero-code-window">
+                    <div class="code-window-header">
+                        <div class="window-dots">
+                            <span class="window-dot dot-red"></span>
+                            <span class="window-dot dot-yellow"></span>
+                            <span class="window-dot dot-green"></span>
+                        </div>
+                        <div class="code-window-tabs">
+                            <button class="code-tab is-active" data-htab="java">Shubhankar.java</button>
+                            <button class="code-tab" data-htab="python">Vision.py</button>
+                            <button class="code-tab" data-htab="sql">Database.sql</button>
+                        </div>
+                    </div>
+                    <div class="code-window-body">
+                        <pre><code id="heroCodeSnippet"><span class="cm">// Larsen &amp; Toubro Enterprise Core</span>
+<span class="kw">public class</span> Shubhankar <span class="kw">implements</span> FullStackDeveloper {
+    <span class="kw">private final</span> String role = <span class="st">"Full Stack Developer"</span>;
+    <span class="kw">private final</span> String company = <span class="st">"Larsen &amp; Toubro, Pune"</span>;
+    <span class="kw">private final</span> String[] stack = {
+        <span class="st">"Java"</span>, <span class="st">"Spring Boot"</span>, <span class="st">"Python"</span>, 
+        <span class="st">"OpenCV"</span>, <span class="st">"MySQL"</span>, <span class="st">"REST APIs"</span>
+    };
+
+    <span class="kw">public</span> Status <span class="fn">deployReliableServices</span>() {
+        <span class="kw">return</span> Status.PRODUCTION_NOMINAL;
+    }
+}</code></pre>
+                    </div>
+                    <div class="code-output-banner" id="codeOutputBanner">
+                        &gt; [COMPILED]: 0 errors, 0 warnings · Executed in 12ms · 200 OK
+                    </div>
+                    <div class="code-window-footer">
+                        <span>git:(main) · UTF-8 · Java 21</span>
+                        <button class="run-code-btn" id="heroRunCodeBtn">
+                            <i class="fa-solid fa-play" style="font-size:0.65rem;"></i> Run Snippet
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <div class="hero__foot">
@@ -2456,57 +2493,64 @@ Type 'help' or click the chips above to run commands.</div>
             });
         });
 
-        // 2. High-Impact Architectural Compile Preloader
-        (function initPreloader() {
-            const preloader = document.getElementById('compilePreloader');
-            const percentEl = document.getElementById('preloaderPercent');
-            const progressBar = document.getElementById('preloaderProgressBar');
-            const skipBtn = document.getElementById('skipPreloaderBtn');
-            const logLines = [
-                document.getElementById('log2'),
-                document.getElementById('log3'),
-                document.getElementById('log4'),
-                document.getElementById('log5')
+        // 2. Retro CRT Terminal Loader (Sample Video Matching)
+        (function initCrtLoader() {
+            const loader = document.getElementById('crtLoader');
+            const skipBtn = document.getElementById('crtSkipBtn');
+            const statusNote = document.getElementById('crtStatusNote');
+
+            const lines = [
+                { textEl: document.getElementById('crtText1'), cursorEl: document.getElementById('crtCursor1'), lineEl: document.getElementById('crtLine1'), str: "Hello world!" },
+                { textEl: document.getElementById('crtText2'), cursorEl: document.getElementById('crtCursor2'), lineEl: document.getElementById('crtLine2'), str: "I'm Shubhankar Negi" },
+                { textEl: document.getElementById('crtText3'), cursorEl: document.getElementById('crtCursor3'), lineEl: document.getElementById('crtLine3'), str: "Full Stack Developer @ Larsen & Toubro (L&T)" },
+                { textEl: document.getElementById('crtText4'), cursorEl: document.getElementById('crtCursor4'), lineEl: document.getElementById('crtLine4'), str: "Initializing runtime... [200 OK]" }
             ];
 
-            let progress = 0;
-            let finished = false;
+            let isFinished = false;
 
-            function finishPreloader() {
-                if (finished) return;
-                finished = true;
-                progress = 100;
-                percentEl.textContent = '100%';
-                progressBar.style.width = '100%';
-                setTimeout(() => {
-                    preloader.classList.add('is-done');
-                    // Scramble hero on entrance
-                    const heroHuman = document.querySelector('.hero__human');
-                    if (heroHuman) scrambleElement(heroHuman);
-                }, 240);
+            function finishLoader() {
+                if (isFinished) return;
+                isFinished = true;
+                loader.classList.add('is-done');
+                const heroHuman = document.querySelector('.hero__human');
+                if (heroHuman) scrambleElement(heroHuman);
             }
 
-            skipBtn.addEventListener('click', finishPreloader);
+            skipBtn.addEventListener('click', finishLoader);
             window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !finished) finishPreloader();
+                if (e.key === 'Escape' && !isFinished) finishLoader();
             });
 
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 8) + 4;
-                if (progress > 100) progress = 100;
-                percentEl.textContent = (progress < 10 ? '0' : '') + progress + '%';
-                progressBar.style.width = progress + '%';
-
-                if (progress > 25 && logLines[0]) logLines[0].classList.add('active');
-                if (progress > 50 && logLines[1]) logLines[1].classList.add('active');
-                if (progress > 75 && logLines[2]) logLines[2].classList.add('active');
-                if (progress > 90 && logLines[3]) logLines[3].classList.add('active');
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    finishPreloader();
+            // Type sequence
+            let curLine = 0;
+            function typeNextLine() {
+                if (curLine >= lines.length) {
+                    statusNote.textContent = "SYSTEM DEPLOYED. LAUNCHING...";
+                    setTimeout(finishLoader, 400);
+                    return;
                 }
-            }, 55);
+
+                const item = lines[curLine];
+                item.lineEl.style.display = 'flex';
+                let charIdx = 0;
+                const text = item.str;
+
+                const tInterval = setInterval(() => {
+                    if (isFinished) { clearInterval(tInterval); return; }
+                    item.textEl.textContent += text[charIdx];
+                    playTactileClick(1200, 0.012);
+                    charIdx++;
+
+                    if (charIdx >= text.length) {
+                        clearInterval(tInterval);
+                        item.cursorEl.style.display = 'none';
+                        curLine++;
+                        setTimeout(typeNextLine, 280);
+                    }
+                }, 38);
+            }
+
+            setTimeout(typeNextLine, 200);
         })();
 
         // 3. Precision Custom Cursor
@@ -2573,211 +2617,155 @@ Type 'help' or click the chips above to run commands.</div>
             reveals.forEach(el => observer.observe(el));
         })();
 
-        // 6. Interactive Hero Topographic Contour Canvas & Crosshair Axis HUD
-        (function initTerrainAndCrosshair() {
-            const hero = document.getElementById('hero');
-            const canvas = document.getElementById('heroTerrainCanvas');
-            const crosshair = document.getElementById('heroCrosshair');
-            const axisX = document.getElementById('crosshairAxisX');
-            const axisY = document.getElementById('crosshairAxisY');
-            const target = document.getElementById('crosshairTarget');
-            const label = document.getElementById('crosshairLabel');
-            const elevationEl = document.getElementById('elevationDisplay');
-            const coordsEl = document.getElementById('terrainCoords');
-
-            if (!hero || !canvas) return;
+        // 6. Interactive Coding Vibes Canvas & Hero IDE Code Window
+        (function initCodingVibes() {
+            const canvas = document.getElementById('codingCanvas');
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
-
             let width, height;
-            let mouseX = -1000, mouseY = -1000;
-            let targetElevation = 2420;
-            let currentElevation = 2420;
 
             function resize() {
-                width = canvas.width = hero.offsetWidth;
-                height = canvas.height = hero.offsetHeight;
+                width = canvas.width = canvas.parentElement.offsetWidth;
+                height = canvas.height = canvas.parentElement.offsetHeight;
             }
             window.addEventListener('resize', resize);
             resize();
 
-            // Marching squares lookup table (16 cases)
-            const msCases = [
-                [], [[3, 2]], [[2, 1]], [[3, 1]],
-                [[0, 1]], [[0, 3], [1, 2]], [[0, 2]], [[0, 3]],
-                [[0, 3]], [[0, 2]], [[0, 1], [3, 2]], [[0, 1]],
-                [[3, 1]], [[2, 1]], [[3, 2]], []
+            // Code tokens floating in background
+            const tokensPool = [
+                "public class", "def transform()", "async/await", "return 200",
+                "import cv2", "SELECT *", "L&T Pune", "Spring Boot", "0x7F2A",
+                "git commit -m", "{ ... }", "=> void", "Tomcat 10", "MySQL.InnoDB",
+                "new HashMap<>()", "cv2.divide()", "speech_engine.run()", "REST API",
+                "@RestController", "kubectl cluster", "npm run build", "lambda x: x"
             ];
 
-            // Grid resolution for smooth 60fps performance
-            const cols = 56;
-            const rows = 34;
+            const particles = [];
+            const count = 42;
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    text: tokensPool[i % tokensPool.length],
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    size: Math.floor(Math.random() * 3) + 11,
+                    alpha: Math.random() * 0.28 + 0.12
+                });
+            }
 
-            // Natural mountain peaks (Himalayan Almora & Pune terrain anchors)
-            const peaks = [
-                { nx: 0.28, ny: 0.42, amp: 1.35, sigma: 0.18 },
-                { nx: 0.74, ny: 0.58, amp: 1.55, sigma: 0.22 },
-                { nx: 0.50, ny: 0.26, amp: 1.15, sigma: 0.16 },
-                { nx: 0.88, ny: 0.22, amp: 0.95, sigma: 0.14 }
-            ];
-
-            // 8 Contour elevation thresholds
-            const thresholds = [0.38, 0.58, 0.78, 1.0, 1.25, 1.52, 1.82, 2.15];
-
-            hero.addEventListener('mouseenter', () => {
-                crosshair.classList.add('is-active');
-                document.body.classList.add('in-hero-crosshair');
-            });
-
-            hero.addEventListener('mouseleave', () => {
-                crosshair.classList.remove('is-active');
-                document.body.classList.remove('in-hero-crosshair');
-                mouseX = -1000;
-                mouseY = -1000;
-            });
-
-            hero.addEventListener('mousemove', (e) => {
-                const rect = hero.getBoundingClientRect();
+            let mouseX = -1000, mouseY = -1000;
+            window.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
                 mouseX = e.clientX - rect.left;
                 mouseY = e.clientY - rect.top;
-
-                // Update crosshair axis positions
-                axisX.style.transform = `translateY(${mouseY}px)`;
-                axisY.style.transform = `translateX(${mouseX}px)`;
-                target.style.transform = `translate(${mouseX - 6}px, ${mouseY - 6}px)`;
-                label.style.transform = `translate(${mouseX + 18}px, ${mouseY + 12}px)`;
-
-                // Exact format matching the design: X 1228 · Y 0340
-                const xStr = String(Math.max(0, Math.round(e.clientX))).padStart(4, '0');
-                const yStr = String(Math.max(0, Math.round(e.clientY))).padStart(4, '0');
-                label.textContent = `X ${xStr} · Y ${yStr}`;
-
-                targetElevation = 2200 + Math.round((mouseY / height) * 480);
-                if (coordsEl) {
-                    coordsEl.textContent = `Cursor · X: ${xStr} · Y: ${yStr} · Almora [29.59° N]`;
-                }
             });
 
-            let time = 0;
-            function draw() {
-                time += 0.012;
+            function render() {
                 ctx.clearRect(0, 0, width, height);
 
-                currentElevation += (targetElevation - currentElevation) * 0.08;
-                if (elevationEl) {
-                    elevationEl.innerHTML = `<span class="note--accent">▲</span> terrain · elevation ${Math.round(currentElevation)}m · interactive`;
-                }
-
                 const isDark = document.documentElement.dataset.theme === 'dark';
-                const baseColor = isDark ? '#508aff' : '#2f5bff';
-                const cellW = width / cols;
-                const cellH = height / rows;
+                const baseColor = isDark ? '59, 130, 246' : '47, 91, 255';
+                const textColor = isDark ? '237, 237, 231' : '14, 14, 13';
 
-                // Precompute 2D scalar field
-                const field = [];
-                for (let i = 0; i <= cols; i++) {
-                    field[i] = [];
-                    const x = i * cellW;
-                    const nx = i / cols;
-                    for (let j = 0; j <= rows; j++) {
-                        const y = j * cellH;
-                        const ny = j / rows;
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
 
-                        let val = 0;
-                        // Background peaks with gentle organic harmonic drift
-                        for (let p = 0; p < peaks.length; p++) {
-                            const pk = peaks[p];
-                            const driftX = Math.sin(time + p * 1.5) * 0.03;
-                            const driftY = Math.cos(time * 0.8 + p) * 0.03;
-                            const dx = (nx - (pk.nx + driftX));
-                            const dy = (ny - (pk.ny + driftY));
-                            const d2 = dx * dx + dy * dy;
-                            const sig2 = 2 * pk.sigma * pk.sigma;
-                            val += pk.amp * Math.exp(-d2 / sig2);
-                        }
+                    if (p.x < -100) p.x = width + 50;
+                    if (p.x > width + 100) p.x = -50;
+                    if (p.y < -30) p.y = height + 20;
+                    if (p.y > height + 30) p.y = -20;
 
-                        // Ambient undulating harmonics
-                        val += Math.sin(nx * 4.2 + time) * 0.12 + Math.cos(ny * 3.8 - time * 0.8) * 0.1;
+                    const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
+                    const isNear = dist < 150;
+                    const hoverBoost = isNear ? (1 - dist / 150) * 0.6 : 0;
 
-                        // Dynamic cursor elevation perturbation (marching rings directly under cursor)
-                        if (mouseX > -500) {
-                            const dMouseX = (x - mouseX) / width;
-                            const dMouseY = (y - mouseY) / height;
-                            const dMouse2 = dMouseX * dMouseX + dMouseY * dMouseY;
-                            // Mouse bump creates the tight concentric rings around crosshair
-                            val += 1.85 * Math.exp(-dMouse2 / 0.032);
-                        }
-
-                        field[i][j] = val;
-                    }
-                }
-
-                // Render contour isolines via Marching Squares
-                ctx.save();
-                ctx.shadowColor = isDark ? 'rgba(80, 138, 255, 0.45)' : 'rgba(47, 91, 255, 0.25)';
-                ctx.shadowBlur = 5;
-
-                for (let tIdx = 0; tIdx < thresholds.length; tIdx++) {
-                    const T = thresholds[tIdx];
-                    const isMajor = (tIdx % 2 === 1);
-
-                    ctx.beginPath();
-                    ctx.lineWidth = isMajor ? 2.4 : 1.3;
-                    ctx.strokeStyle = isMajor
-                        ? baseColor
-                        : (isDark ? 'rgba(80, 138, 255, 0.65)' : 'rgba(47, 91, 255, 0.55)');
-
-                    for (let i = 0; i < cols; i++) {
-                        const x0 = i * cellW;
-                        const x1 = (i + 1) * cellW;
-                        for (let j = 0; j < rows; j++) {
-                            const y0 = j * cellH;
-                            const y1 = (j + 1) * cellH;
-
-                            const v0 = field[i][j];
-                            const v1 = field[i + 1][j];
-                            const v2 = field[i + 1][j + 1];
-                            const v3 = field[i][j + 1];
-
-                            const bit0 = v0 >= T ? 8 : 0;
-                            const bit1 = v1 >= T ? 4 : 0;
-                            const bit2 = v2 >= T ? 2 : 0;
-                            const bit3 = v3 >= T ? 1 : 0;
-                            const code = bit0 | bit1 | bit2 | bit3;
-
-                            if (code === 0 || code === 15) continue;
-
-                            function getEdgePt(edge) {
-                                if (edge === 0) {
-                                    const t = (T - v0) / ((v1 - v0) || 0.0001);
-                                    return [x0 + t * cellW, y0];
-                                } else if (edge === 1) {
-                                    const t = (T - v1) / ((v2 - v1) || 0.0001);
-                                    return [x1, y0 + t * cellH];
-                                } else if (edge === 2) {
-                                    const t = (T - v3) / ((v2 - v3) || 0.0001);
-                                    return [x0 + t * cellW, y1];
-                                } else {
-                                    const t = (T - v0) / ((v3 - v0) || 0.0001);
-                                    return [x0, y0 + t * cellH];
-                                }
-                            }
-
-                            const segs = msCases[code];
-                            for (let s = 0; s < segs.length; s++) {
-                                const pA = getEdgePt(segs[s][0]);
-                                const pB = getEdgePt(segs[s][1]);
-                                ctx.moveTo(pA[0], pA[1]);
-                                ctx.lineTo(pB[0], pB[1]);
-                            }
+                    // Draw connecting lines between close tokens
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const d2 = Math.hypot(p.x - p2.x, p.y - p2.y);
+                        if (d2 < 120) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(${baseColor}, ${(1 - d2 / 120) * 0.08})`;
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
                         }
                     }
-                    ctx.stroke();
+
+                    // Draw token text
+                    ctx.font = `${p.size}px "Geist Mono", monospace`;
+                    const alpha = Math.min(1, p.alpha + hoverBoost);
+                    ctx.fillStyle = isNear ? `rgba(${baseColor}, ${alpha})` : `rgba(${textColor}, ${alpha * 0.65})`;
+                    ctx.fillText(p.text, p.x, p.y);
                 }
 
-                ctx.restore();
-                requestAnimationFrame(draw);
+                requestAnimationFrame(render);
             }
-            draw();
+            render();
+
+            // Hero IDE Tabs and Run Button
+            const heroTabs = document.querySelectorAll('.code-tab');
+            const heroSnippet = document.getElementById('heroCodeSnippet');
+            const runBtn = document.getElementById('heroRunCodeBtn');
+            const outputBanner = document.getElementById('codeOutputBanner');
+
+            const heroCodes = {
+                java: `<span class="cm">// Larsen &amp; Toubro Enterprise Core</span>
+<span class="kw">public class</span> Shubhankar <span class="kw">implements</span> FullStackDeveloper {
+    <span class="kw">private final</span> String role = <span class="st">"Full Stack Developer"</span>;
+    <span class="kw">private final</span> String company = <span class="st">"Larsen &amp; Toubro, Pune"</span>;
+    <span class="kw">private final</span> String[] stack = {
+        <span class="st">"Java"</span>, <span class="st">"Spring Boot"</span>, <span class="st">"Python"</span>, 
+        <span class="st">"OpenCV"</span>, <span class="st">"MySQL"</span>, <span class="st">"REST APIs"</span>
+    };
+
+    <span class="kw">public</span> Status <span class="fn">deployReliableServices</span>() {
+        <span class="kw">return</span> Status.PRODUCTION_NOMINAL;
+    }
+}`,
+                python: `<span class="cm"># Computer Vision Real-Time Pipeline</span>
+<span class="kw">import</span> cv2
+<span class="kw">import</span> numpy <span class="kw">as</span> np
+
+<span class="kw">def</span> <span class="fn">convert_to_sketch</span>(frame_bgr):
+    gray = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)
+    inv = cv2.bitwise_not(gray)
+    blur = cv2.GaussianBlur(inv, (21, 21), sigmaX=0)
+    <span class="cm"># Color dodge division yielding 90% sketch accuracy</span>
+    <span class="kw">return</span> cv2.divide(gray, 255 - blur, scale=256.0)`,
+                sql: `<span class="cm">-- Enterprise Evaluation Schema</span>
+<span class="kw">CREATE TABLE</span> lnt_telemetry (
+    node_id <span class="kw">VARCHAR</span>(32) <span class="kw">PRIMARY KEY</span>,
+    cluster_region <span class="kw">VARCHAR</span>(32) <span class="kw">DEFAULT</span> <span class="st">'Pune_Cluster'</span>,
+    status <span class="kw">ENUM</span>(<span class="st">'ACTIVE'</span>, <span class="st">'DEPLOYING'</span>) <span class="kw">NOT NULL</span>,
+    p99_latency_ms <span class="kw">DECIMAL</span>(5,2) <span class="kw">DEFAULT</span> 14.20,
+    created_at <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>
+) <span class="kw">ENGINE</span>=InnoDB <span class="kw">DEFAULT CHARSET</span>=utf8mb4;`
+            };
+
+            heroTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    playTactileClick(1100, 0.02);
+                    heroTabs.forEach(t => t.classList.remove('is-active'));
+                    tab.classList.add('is-active');
+                    const lang = tab.dataset.htab;
+                    heroSnippet.innerHTML = heroCodes[lang];
+                    outputBanner.style.display = 'none';
+                });
+            });
+
+            runBtn.addEventListener('click', () => {
+                playTactileClick(1300, 0.03);
+                outputBanner.style.display = 'block';
+                outputBanner.innerHTML = '&gt; Executing build pipeline...';
+                setTimeout(() => {
+                    outputBanner.innerHTML = '&gt; [COMPILED]: 0 errors, 0 warnings · Executed in 14ms · 200 OK';
+                }, 300);
+            });
         })();
 
         // 7. Interactive Machine Token Typing Streamer
