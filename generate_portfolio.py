@@ -27,21 +27,24 @@ HTML_CONTENT = r'''<!DOCTYPE html>
     <style>
         /* ===== CSS RESET & DESIGN TOKENS ===== */
         :root {
-            /* Light Theme (Warm Paper / Swiss Editorial) */
-            --bg: #f4f4f0;
-            --bg-raised: #ecece6;
-            --bg-surface: #ffffff;
-            --ink: #0e0e0d;
-            --muted: #65655f;
-            --line: rgba(14, 14, 13, 0.14);
-            --line-strong: rgba(14, 14, 13, 0.32);
-            --control-line: rgba(14, 14, 13, 0.5);
-            --accent: #2f5bff;
-            --accent-ink: #ffffff;
-            --accent-text: #2a52f0;
-            --accent-dim: rgba(47, 91, 255, 0.12);
-            --success: #10b981;
-            --danger: #c02b24;
+            /* Black, White & Matrix Green Core Theme */
+            --bg: #07080a;
+            --bg-raised: #0d1014;
+            --bg-surface: #13171e;
+            --ink: #ffffff;
+            --ink-dim: #e1e7ec;
+            --muted: #8b949e;
+            --line: rgba(255, 255, 255, 0.12);
+            --line-strong: rgba(0, 255, 102, 0.3);
+            --control-line: rgba(0, 255, 102, 0.45);
+            --accent: #00ff66;
+            --accent-hover: #10b981;
+            --accent-ink: #000000;
+            --accent-text: #00ff66;
+            --accent-dim: rgba(0, 255, 102, 0.12);
+            --accent-glow: 0 0 16px rgba(0, 255, 102, 0.35);
+            --success: #00ff66;
+            --danger: #ff5555;
 
             --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
@@ -66,27 +69,30 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
             --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 
-            color-scheme: light;
+            color-scheme: dark;
         }
 
-        /* Dark Theme (Graphite & Warm Chalk) */
-        [data-theme="dark"] {
-            --bg: #0b0b0c;
-            --bg-raised: #141416;
-            --bg-surface: #1a1a1e;
-            --ink: #edede7;
-            --muted: #8b8b85;
-            --line: rgba(237, 237, 231, 0.12);
-            --line-strong: rgba(237, 237, 231, 0.3);
-            --control-line: rgba(237, 237, 231, 0.45);
-            --accent: #3b82f6;
+        /* Light Contrast Variation (Minimalist White/Black with Emerald/Matrix Green) */
+        [data-theme="light"] {
+            --bg: #f8faf8;
+            --bg-raised: #eef3ee;
+            --bg-surface: #ffffff;
+            --ink: #070a08;
+            --ink-dim: #1f2a22;
+            --muted: #57685c;
+            --line: rgba(0, 0, 0, 0.12);
+            --line-strong: rgba(0, 168, 67, 0.35);
+            --control-line: rgba(0, 168, 67, 0.5);
+            --accent: #00a843;
+            --accent-hover: #008f39;
             --accent-ink: #ffffff;
-            --accent-text: #60a5fa;
-            --accent-dim: rgba(59, 130, 246, 0.15);
-            --success: #34d399;
-            --danger: #ff6b5e;
+            --accent-text: #008f39;
+            --accent-dim: rgba(0, 168, 67, 0.12);
+            --accent-glow: 0 0 12px rgba(0, 168, 67, 0.25);
+            --success: #00a843;
+            --danger: #d92424;
 
-            color-scheme: dark;
+            color-scheme: light;
         }
 
         /* Base Resets */
@@ -446,40 +452,43 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             column-gap: var(--col-gap);
         }
 
-        /* Button Architecture */
+        /* Button Architecture (Matrix Green & Black) */
         .btn {
-            --btn-bg: var(--ink);
-            --btn-fg: var(--bg);
-            background: var(--btn-bg);
-            color: var(--btn-fg);
+            background: var(--accent);
+            color: var(--accent-ink);
             height: 3.1rem;
             display: inline-flex;
             align-items: center;
             gap: 0.75rem;
-            padding-inline: 1.5rem;
+            padding-inline: 1.6rem;
             border-radius: 999px;
             font-size: var(--step-0);
-            font-weight: 400;
-            letter-spacing: -0.015em;
+            font-weight: 600;
+            letter-spacing: -0.01em;
             transition: all var(--dur-1) var(--ease-out);
-            border: 1px solid transparent;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 14px rgba(0, 255, 102, 0.25);
             white-space: nowrap;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 24px rgba(0, 255, 102, 0.5);
         }
 
         .btn--ghost {
-            --btn-bg: transparent;
-            --btn-fg: var(--ink);
+            background: transparent;
+            color: var(--ink);
             border-color: var(--line-strong);
+            box-shadow: none;
+            font-weight: 500;
         }
 
         .btn--ghost:hover {
-            border-color: var(--ink);
-            background: var(--bg-raised);
+            border-color: var(--accent);
+            color: var(--accent-text);
+            background: var(--accent-dim);
+            box-shadow: 0 0 16px rgba(0, 255, 102, 0.2);
         }
 
         .btn .arrow {
@@ -489,10 +498,32 @@ HTML_CONTENT = r'''<!DOCTYPE html>
 
         .btn:hover .arrow { transform: translateX(4px); }
 
-        /* Scramble Text Hover Utility */
-        [data-scramble] {
-            cursor: default;
+        
+        .fade-child {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
+        .fade-child.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    
+        /* Clean Fluid Fade-in on Scroll (Zero Clutter) */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scramble Text Hover Utility */
+        
 
         /* Scroll Reveal Effect */
         .reveal-on-scroll {
@@ -666,15 +697,15 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             overflow: hidden;
         }
 
-        /* ===== HERO CODING VIBES ===== */
-        #codingCanvas {
+        /* ===== HERO MATRIX CODING VIBES ===== */
+        #matrixHeroCanvas {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.55;
+            opacity: 0.32;
             transition: opacity 0.5s ease;
         }
 
@@ -1856,18 +1887,18 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                 <circle cx="62" cy="32" r="2.2" fill="currentColor"></circle>
             </svg>
             <span class="brand__name">
-                <span data-scramble>Shubhankar Negi</span>
+                <span>Shubhankar Negi</span>
                 <span class="brand__role">/ full stack</span>
             </span>
         </a>
 
         <nav class="nav" aria-label="Main Navigation">
             <ul>
-                <li><a href="#work" class="nav__link"><span class="note">01</span><span data-scramble>Work</span></a></li>
-                <li><a href="#philosophy" class="nav__link"><span class="note">02</span><span data-scramble>Philosophy</span></a></li>
-                <li><a href="#capabilities" class="nav__link"><span class="note">03</span><span data-scramble>API &amp; Stack</span></a></li>
-                <li><a href="#background" class="nav__link"><span class="note">04</span><span data-scramble>Background</span></a></li>
-                <li><a href="#contact" class="nav__link"><span class="note">05</span><span data-scramble>Contact</span></a></li>
+                <li><a href="#work" class="nav__link"><span class="note">01</span><span>Work</span></a></li>
+                <li><a href="#philosophy" class="nav__link"><span class="note">02</span><span>Philosophy</span></a></li>
+                <li><a href="#capabilities" class="nav__link"><span class="note">03</span><span>API &amp; Stack</span></a></li>
+                <li><a href="#background" class="nav__link"><span class="note">04</span><span>Background</span></a></li>
+                <li><a href="#contact" class="nav__link"><span class="note">05</span><span>Contact</span></a></li>
             </ul>
         </nav>
 
@@ -1916,18 +1947,18 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= HERO ================= -->
         <section class="hero wrap" id="hero">
             <!-- Dynamic Coding Canvas (Syntax & Token Matrix) -->
-            <canvas id="codingCanvas"></canvas>
+            <canvas id="matrixHeroCanvas"></canvas>
 
             <div class="hero__top note">
-                <span data-scramble>Shubhankar Negi · Full Stack Developer</span>
+                <span>Shubhankar Negi · Full Stack Developer</span>
                 <span>Base camp · Pune &amp; Almora · 29.59° N, 79.65° E</span>
                 <span class="note--success">● Active @ Larsen &amp; Toubro (L&amp;T)</span>
             </div>
 
             <div class="hero-grid">
                 <!-- Left: Editorial Headline & Machine Tokens -->
-                <div class="hero__title">
-                    <h1 class="hero__human display" data-scramble>I build software.</h1>
+                <div class="hero__title fade-child">
+                    <h1 class="hero__human display">I build software.</h1>
                     <p class="hero__machine h2" id="streamTarget">
                         Full Stack Developer at <span class="highlight">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.
                     </p>
@@ -1943,7 +1974,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                 </div>
 
                 <!-- Right: Interactive Developer IDE Code Window -->
-                <div class="hero-code-window">
+                <div class="hero-code-window fade-child">
                     <div class="code-window-header">
                         <div class="window-dots">
                             <span class="window-dot dot-red"></span>
@@ -1983,7 +2014,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                 </div>
             </div>
 
-            <div class="hero__foot">
+            <div class="hero__foot fade-child">
                 <p class="hero__intro lead">
                     Bridging scalable backend microservices with high-performance responsive interfaces. From enterprise web applications at L&amp;T to real-time OpenCV computer vision matrices.
                 </p>
@@ -2000,7 +2031,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= [01] PHILOSOPHY / MANIFESTO ================= -->
         <section class="manifesto wrap reveal-on-scroll" id="philosophy">
             <header class="section-head">
-                <span class="note note--ink" data-scramble>[01] Philosophy</span>
+                <span class="note note--ink">[01] Philosophy</span>
                 <span class="note">fig. 01 · wireframe → enterprise production</span>
             </header>
 
@@ -2038,7 +2069,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= [02] SELECTED WORK (3-STAGE ARCHITECTURAL FIELD REPORTS) ================= -->
         <section class="work-section wrap reveal-on-scroll" id="work">
             <header class="section-head">
-                <span class="note note--ink" data-scramble>[02] Selected work</span>
+                <span class="note note--ink">[02] Selected work</span>
                 <span class="note">Interactive Field Reports · 3 Stages</span>
             </header>
 
@@ -2069,7 +2100,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                     <div class="ws-info-panel">
                         <div>
                             <div class="note note--accent" id="wsMetaDate" style="margin-bottom:0.75rem;">MAR 2026 — PRESENT · PUNE</div>
-                            <h2 class="h2" id="wsProjectTitle" style="margin-bottom:1rem;" data-scramble>Enterprise Full-Stack Architecture</h2>
+                            <h2 class="h2" id="wsProjectTitle" style="margin-bottom:1rem;">Enterprise Full-Stack Architecture</h2>
                             <p class="note" id="wsProjectDesc" style="font-size:var(--step-0); line-height:1.65; margin-bottom:1.5rem;">
                                 Engineering scalable microservices, responsive web views, and high-throughput API endpoints at Larsen &amp; Toubro. Built for mission-critical reliability across multi-tenant enterprise workflows.
                             </p>
@@ -2152,7 +2183,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= [03] CAPABILITIES & INTERACTIVE REST PLAYGROUND ================= -->
         <section class="capabilities-section wrap reveal-on-scroll" id="capabilities">
             <header class="section-head">
-                <span class="note note--ink" data-scramble>[03] Capabilities</span>
+                <span class="note note--ink">[03] Capabilities</span>
                 <span class="note">Interactive REST Client &amp; Source Inspector</span>
             </header>
 
@@ -2241,7 +2272,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= [04] BACKGROUND & CREDENTIALS ================= -->
         <section class="education-section wrap reveal-on-scroll" id="background">
             <header class="section-head">
-                <span class="note note--ink" data-scramble>[04] Education &amp; Credentials</span>
+                <span class="note note--ink">[04] Education &amp; Credentials</span>
                 <span class="note">Academic foundation &amp; accreditations</span>
             </header>
 
@@ -2249,7 +2280,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                 <div class="edu-main">
                     <div class="degree-box">
                         <span class="note note--accent">AUG 2022 — MAY 2025</span>
-                        <h2 class="h2" style="margin-top:0.5rem; margin-bottom:0.25rem;" data-scramble>Bachelor of Technology in Computer Science</h2>
+                        <h2 class="h2" style="margin-top:0.5rem; margin-bottom:0.25rem;">Bachelor of Technology in Computer Science</h2>
                         <p class="note" style="margin-bottom:1.5rem;">Graphic Era Hill University · Bhimtal Campus, Uttarakhand</p>
 
                         <p class="lead" style="font-size:var(--step-0); margin-bottom:1.5rem;">
@@ -2269,7 +2300,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                 </div>
 
                 <div class="edu-aside">
-                    <span class="note note--ink" data-scramble>Verified Certifications</span>
+                    <span class="note note--ink">Verified Certifications</span>
                     <div>
                         <div class="cert-row">
                             <span>Project Development Using Java</span>
@@ -2285,7 +2316,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                         </div>
                     </div>
 
-                    <span class="note note--ink" style="margin-top:0.5rem;" data-scramble>Professional Strengths</span>
+                    <span class="note note--ink" style="margin-top:0.5rem;">Professional Strengths</span>
                     <p class="note" style="line-height:1.7;">
                         Rapid learning curve · High technical ownership · Analytical root-cause problem solver · Disciplined and sincere · Cross-functional collaborator.
                     </p>
@@ -2296,29 +2327,29 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= [05] BEYOND CODE ================= -->
         <section class="interests-section wrap reveal-on-scroll" id="interests">
             <header class="section-head">
-                <span class="note note--ink" data-scramble>[05] Beyond Code</span>
+                <span class="note note--ink">[05] Beyond Code</span>
                 <span class="note">Human perspective</span>
             </header>
 
             <div class="interests-grid">
                 <div class="interest-item">
                     <span class="note note--accent">01</span>
-                    <h3 data-scramble>Technology</h3>
+                    <h3>Technology</h3>
                     <p>Continuously exploring full-stack patterns, container orchestration, and high-performance computing frameworks.</p>
                 </div>
                 <div class="interest-item">
                     <span class="note note--accent">02</span>
-                    <h3 data-scramble>Travel</h3>
+                    <h3>Travel</h3>
                     <p>Visiting historical landmarks of geographic, architectural, and cultural heritage across India.</p>
                 </div>
                 <div class="interest-item">
                     <span class="note note--accent">03</span>
-                    <h3 data-scramble>Trekking</h3>
+                    <h3>Trekking</h3>
                     <p>Himalayan high-altitude trail trekking to build endurance, mental clarity, and adaptive problem solving.</p>
                 </div>
                 <div class="interest-item">
                     <span class="note note--accent">04</span>
-                    <h3 data-scramble>Gaming</h3>
+                    <h3>Gaming</h3>
                     <p>Strategic virtual worlds that test spatial reasoning, tactical reflexes, and synchronized team cooperation.</p>
                 </div>
             </div>
@@ -2327,11 +2358,11 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         <!-- ================= [06] NEXT / CONTACT ================= -->
         <section class="cta-section wrap reveal-on-scroll" id="contact">
             <header class="section-head">
-                <span class="note note--ink" data-scramble>[06] Next</span>
+                <span class="note note--ink">[06] Next</span>
                 <span class="note">Direct communication channels</span>
             </header>
 
-            <h2 class="display cta-title" data-scramble>Tell me what you're building.</h2>
+            <h2 class="display cta-title">Tell me what you're building.</h2>
 
             <div class="cta-channels">
                 <div class="cta-item">
@@ -2461,45 +2492,15 @@ Type 'help' or click the chips above to run commands.</div>
             if (sfxEnabled) playTactileClick(1200, 0.04);
         });
 
-        // 1. Text Scramble / Decrypt Animation
-        function scrambleElement(el) {
-            const originalText = el.getAttribute('data-original-text') || el.textContent;
-            if (!el.getAttribute('data-original-text')) {
-                el.setAttribute('data-original-text', originalText);
-            }
-            const chars = '#@%&*01_/><~^+-=';
-            let iterations = 0;
-            const maxIterations = originalText.length * 2.2;
-
-            if (el._scrambleInterval) clearInterval(el._scrambleInterval);
-
-            el._scrambleInterval = setInterval(() => {
-                el.textContent = originalText
-                    .split('')
-                    .map((char, index) => {
-                        if (char === ' ' || char === '\n') return char;
-                        if (index < iterations / 2.2) {
-                            return originalText[index];
-                        }
-                        return chars[Math.floor(Math.random() * chars.length)];
-                    })
-                    .join('');
-
-                iterations++;
-                if (iterations > maxIterations) {
-                    clearInterval(el._scrambleInterval);
-                    el.textContent = originalText;
-                }
-            }, 30);
-        }
-
-        document.querySelectorAll('[data-scramble]').forEach(el => {
-            el.setAttribute('data-original-text', el.textContent.trim());
-            el.addEventListener('mouseenter', () => {
-                playTactileClick(1100, 0.015);
-                scrambleElement(el);
+        // 1. Clean Fade-In Reveal Controller (Clean & Spacious)
+        function triggerHeroFadeIn() {
+            const heroElements = document.querySelectorAll('.hero .fade-child');
+            heroElements.forEach((el, idx) => {
+                setTimeout(() => {
+                    el.classList.add('is-revealed');
+                }, idx * 120 + 80);
             });
-        });
+        }
 
         // 2. Retro CRT Terminal Loader (Sample Video Matching)
         (function initCrtLoader() {
@@ -2511,7 +2512,7 @@ Type 'help' or click the chips above to run commands.</div>
                 { textEl: document.getElementById('crtText1'), cursorEl: document.getElementById('crtCursor1'), lineEl: document.getElementById('crtLine1'), str: "Hello world!" },
                 { textEl: document.getElementById('crtText2'), cursorEl: document.getElementById('crtCursor2'), lineEl: document.getElementById('crtLine2'), str: "I'm Shubhankar Negi" },
                 { textEl: document.getElementById('crtText3'), cursorEl: document.getElementById('crtCursor3'), lineEl: document.getElementById('crtLine3'), str: "Full Stack Developer @ Larsen & Toubro (L&T)" },
-                { textEl: document.getElementById('crtText4'), cursorEl: document.getElementById('crtCursor4'), lineEl: document.getElementById('crtLine4'), str: "Initializing runtime... [200 OK]" }
+                { textEl: document.getElementById('crtText4'), cursorEl: document.getElementById('crtCursor4'), lineEl: document.getElementById('crtLine4'), str: "Matrix runtime initialized... [200 OK]" }
             ];
 
             let isFinished = false;
@@ -2520,8 +2521,7 @@ Type 'help' or click the chips above to run commands.</div>
                 if (isFinished) return;
                 isFinished = true;
                 loader.classList.add('is-done');
-                const heroHuman = document.querySelector('.hero__human');
-                if (heroHuman) scrambleElement(heroHuman);
+                triggerHeroFadeIn();
             }
 
             skipBtn.addEventListener('click', finishLoader);
@@ -2625,9 +2625,9 @@ Type 'help' or click the chips above to run commands.</div>
             reveals.forEach(el => observer.observe(el));
         })();
 
-        // 6. Interactive Coding Vibes Canvas & Hero IDE Code Window
-        (function initCodingVibes() {
-            const canvas = document.getElementById('codingCanvas');
+        // 6. Authentic Matrix Digital Rain Canvas & Hero IDE Code Window
+        (function initMatrixHeroRain() {
+            const canvas = document.getElementById('matrixHeroCanvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let width, height;
@@ -2639,81 +2639,57 @@ Type 'help' or click the chips above to run commands.</div>
             window.addEventListener('resize', resize);
             resize();
 
-            // Code tokens floating in background
-            const tokensPool = [
-                "public class", "def transform()", "async/await", "return 200",
-                "import cv2", "SELECT *", "L&T Pune", "Spring Boot", "0x7F2A",
-                "git commit -m", "{ ... }", "=> void", "Tomcat 10", "MySQL.InnoDB",
-                "new HashMap<>()", "cv2.divide()", "speech_engine.run()", "REST API",
-                "@RestController", "kubectl cluster", "npm run build", "lambda x: x"
-            ];
+            // Authentic Matrix Glyph Set (Katakana, Binary, Hex, Code Symbols)
+            const glyphs = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ";
+            const fontSize = 14;
+            const columns = Math.floor(width / fontSize) + 1;
+            const drops = Array(columns).fill(1);
+            let mouseCol = -1;
 
-            const particles = [];
-            const count = 42;
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    text: tokensPool[i % tokensPool.length],
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.45,
-                    vy: (Math.random() - 0.5) * 0.45,
-                    size: Math.floor(Math.random() * 3) + 11,
-                    alpha: Math.random() * 0.28 + 0.12
-                });
-            }
-
-            let mouseX = -1000, mouseY = -1000;
             window.addEventListener('mousemove', (e) => {
                 const rect = canvas.getBoundingClientRect();
-                mouseX = e.clientX - rect.left;
-                mouseY = e.clientY - rect.top;
+                const mx = e.clientX - rect.left;
+                mouseCol = Math.floor(mx / fontSize);
             });
 
-            function render() {
-                ctx.clearRect(0, 0, width, height);
+            function renderMatrix() {
+                // Subtle phosphor persistence tail
+                ctx.fillStyle = 'rgba(7, 8, 10, 0.08)';
+                ctx.fillRect(0, 0, width, height);
 
-                const isDark = document.documentElement.dataset.theme === 'dark';
-                const baseColor = isDark ? '59, 130, 246' : '47, 91, 255';
-                const textColor = isDark ? '237, 237, 231' : '14, 14, 13';
+                ctx.font = `${fontSize}px "Geist Mono", monospace`;
 
-                for (let i = 0; i < particles.length; i++) {
-                    const p = particles[i];
-                    p.x += p.vx;
-                    p.y += p.vy;
+                for (let i = 0; i < drops.length; i++) {
+                    const char = glyphs[Math.floor(Math.random() * glyphs.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
 
-                    if (p.x < -100) p.x = width + 50;
-                    if (p.x > width + 100) p.x = -50;
-                    if (p.y < -30) p.y = height + 20;
-                    if (p.y > height + 30) p.y = -20;
+                    const isNearMouse = Math.abs(i - mouseCol) <= 2;
 
-                    const dist = Math.hypot(p.x - mouseX, p.y - mouseY);
-                    const isNear = dist < 150;
-                    const hoverBoost = isNear ? (1 - dist / 150) * 0.6 : 0;
-
-                    // Draw connecting lines between close tokens
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const p2 = particles[j];
-                        const d2 = Math.hypot(p.x - p2.x, p.y - p2.y);
-                        if (d2 < 120) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(${baseColor}, ${(1 - d2 / 120) * 0.08})`;
-                            ctx.lineWidth = 1;
-                            ctx.moveTo(p.x, p.y);
-                            ctx.lineTo(p2.x, p2.y);
-                            ctx.stroke();
-                        }
+                    // Leading bright white-green tip
+                    if (Math.random() > 0.88 || isNearMouse) {
+                        ctx.fillStyle = isNearMouse ? '#ffffff' : '#e6ffe6';
+                        ctx.shadowColor = '#00ff66';
+                        ctx.shadowBlur = 8;
+                    } else {
+                        ctx.fillStyle = '#00ff66';
+                        ctx.shadowColor = 'transparent';
+                        ctx.shadowBlur = 0;
                     }
 
-                    // Draw token text
-                    ctx.font = `${p.size}px "Geist Mono", monospace`;
-                    const alpha = Math.min(1, p.alpha + hoverBoost);
-                    ctx.fillStyle = isNear ? `rgba(${baseColor}, ${alpha})` : `rgba(${textColor}, ${alpha * 0.65})`;
-                    ctx.fillText(p.text, p.x, p.y);
-                }
+                    ctx.fillText(char, x, y);
 
-                requestAnimationFrame(render);
+                    // Reset drop when exceeding height
+                    if (y > height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+
+                    // Accelerate slightly near mouse
+                    drops[i] += isNearMouse ? 1.5 : 1;
+                }
             }
-            render();
+
+            setInterval(renderMatrix, 40);
 
             // Hero IDE Tabs and Run Button
             const heroTabs = document.querySelectorAll('.code-tab');
@@ -2769,10 +2745,10 @@ Type 'help' or click the chips above to run commands.</div>
             runBtn.addEventListener('click', () => {
                 playTactileClick(1300, 0.03);
                 outputBanner.style.display = 'block';
-                outputBanner.innerHTML = '&gt; Executing build pipeline...';
+                outputBanner.innerHTML = '&gt; Initializing runtime container...';
                 setTimeout(() => {
-                    outputBanner.innerHTML = '&gt; [COMPILED]: 0 errors, 0 warnings · Executed in 14ms · 200 OK';
-                }, 300);
+                    outputBanner.innerHTML = '&gt; [COMPILED]: 0 errors, 0 warnings · Executed in 12ms · 200 OK';
+                }, 280);
             });
         })();
 
@@ -2876,7 +2852,7 @@ Type 'help' or click the chips above to run commands.</div>
             function renderProject() {
                 const p = projectData[curProj];
                 titleEl.textContent = p.title;
-                scrambleElement(titleEl);
+                // title updated cleanly without scramble
                 metaEl.textContent = p.meta;
                 descEl.textContent = p.desc;
                 tagsEl.innerHTML = p.tags.map(t => `<span class="work-tag">${t}</span>`).join('');
