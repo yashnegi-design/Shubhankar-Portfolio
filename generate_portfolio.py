@@ -137,6 +137,23 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             opacity: 0.85;
         }
 
+        
+        /* Matrix Screen Takeover Transition Canvas */
+        #crtMatrixTakeoverCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        #crtMatrixTakeoverCanvas.is-active {
+            opacity: 1;
+        }
+    
         /* CRT Vignette & Screen Curvature */
         .crt-vignette {
             position: absolute;
@@ -1827,6 +1844,8 @@ HTML_CONTENT = r'''<!DOCTYPE html>
     <div class="crt-loader" id="crtLoader" aria-hidden="true">
         <div class="crt-scanlines"></div>
         <div class="crt-vignette"></div>
+        <!-- Matrix Screen Takeover Canvas -->
+        <canvas id="crtMatrixTakeoverCanvas"></canvas>
         <div class="crt-terminal-box">
             <div class="crt-meta-bar">
                 <span>TERMINAL_SESSION // TTY1 · PORT: 3000 · REV 2026.3</span>
@@ -1905,10 +1924,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             </button>
 
             <!-- Command Palette Toggle -->
-            <button class="header-btn" id="cmdToggleBtn" title="Open Quick Command Palette [⌘K]">
-                <i class="fa-solid fa-terminal" style="font-size:0.75rem;"></i>
-                <span class="kbd-tag">⌘K</span>
-            </button>
+            
         </div>
 
         <!-- Scroll Depth Calibrated Ruler -->
@@ -2471,11 +2487,13 @@ Type 'help' or click the chips above to run commands.</div>
             });
         }
 
-        // 2. Retro CRT Terminal Loader (Sample Video Matching)
+        // 2. Retro CRT Terminal Loader with Cinematic Matrix Screen Takeover
         (function initCrtLoader() {
             const loader = document.getElementById('crtLoader');
             const skipBtn = document.getElementById('crtSkipBtn');
             const statusNote = document.getElementById('crtStatusNote');
+            const terminalBox = document.querySelector('.crt-terminal-box');
+            const takeoverCanvas = document.getElementById('crtMatrixTakeoverCanvas');
 
             const lines = [
                 { textEl: document.getElementById('crtText1'), cursorEl: document.getElementById('crtCursor1'), lineEl: document.getElementById('crtLine1'), str: "Hello world!" },
@@ -2485,24 +2503,102 @@ Type 'help' or click the chips above to run commands.</div>
 
             let isFinished = false;
 
-            function finishLoader() {
+            // Direct instant skip
+            function directSkip() {
                 if (isFinished) return;
                 isFinished = true;
                 loader.classList.add('is-done');
                 triggerHeroFadeIn();
             }
 
-            skipBtn.addEventListener('click', finishLoader);
+            skipBtn.addEventListener('click', directSkip);
             window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !isFinished) finishLoader();
+                if (e.key === 'Escape' && !isFinished) directSkip();
             });
 
-            // Type sequence
+            // Cinematic Matrix Screen Takeover Transition
+            function runMatrixScreenTakeover() {
+                if (isFinished) return;
+                if (!takeoverCanvas) { directSkip(); return; }
+
+                const tCtx = takeoverCanvas.getContext('2d');
+                takeoverCanvas.width = window.innerWidth;
+                takeoverCanvas.height = window.innerHeight;
+                takeoverCanvas.classList.add('is-active');
+
+                // Fade out CRT terminal frame as matrix rain sweeps
+                if (terminalBox) {
+                    terminalBox.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    terminalBox.style.opacity = '0';
+                    terminalBox.style.transform = 'scale(0.96)';
+                }
+
+                const glyphs = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ";
+                const fontSize = 15;
+                const columns = Math.floor(takeoverCanvas.width / fontSize) + 1;
+                // Start all columns staggered slightly from above the top
+                const drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -15));
+
+                let frameCount = 0;
+                const maxFrames = 38; // Sweeps down screen in ~750ms
+
+                const takeoverInterval = setInterval(() => {
+                    tCtx.fillStyle = 'rgba(7, 8, 10, 0.14)';
+                    tCtx.fillRect(0, 0, takeoverCanvas.width, takeoverCanvas.height);
+                    tCtx.font = `bold ${fontSize}px "Geist Mono", monospace`;
+
+                    for (let i = 0; i < drops.length; i++) {
+                        const char = glyphs[Math.floor(Math.random() * glyphs.length)];
+                        const x = i * fontSize;
+                        const y = drops[i] * fontSize;
+
+                        if (drops[i] >= 0) {
+                            // Bright glowing white-green leading tip
+                            tCtx.fillStyle = '#ffffff';
+                            tCtx.shadowColor = '#00ff66';
+                            tCtx.shadowBlur = 10;
+                            tCtx.fillText(char, x, y);
+
+                            // Green phosphor body behind tip
+                            if (drops[i] > 1) {
+                                const prevChar = glyphs[Math.floor(Math.random() * glyphs.length)];
+                                tCtx.fillStyle = '#00ff66';
+                                tCtx.shadowBlur = 4;
+                                tCtx.fillText(prevChar, x, (drops[i] - 1) * fontSize);
+                            }
+                        }
+
+                        // High velocity drop for takeover sweep
+                        drops[i] += 2;
+                    }
+
+                    frameCount++;
+
+                    // At frame 18 (~350ms), landing page starts emerging underneath
+                    if (frameCount === 18) {
+                        triggerHeroFadeIn();
+                    }
+
+                    // Complete takeover & dissolve into hero
+                    if (frameCount >= maxFrames) {
+                        clearInterval(takeoverInterval);
+                        isFinished = true;
+                        loader.style.transition = 'opacity 0.45s ease';
+                        loader.style.opacity = '0';
+                        setTimeout(() => {
+                            loader.classList.add('is-done');
+                        }, 450);
+                    }
+                }, 20);
+            }
+
+            // Typing sequence for the 3 requested lines
             let curLine = 0;
             function typeNextLine() {
                 if (curLine >= lines.length) {
-                    statusNote.textContent = "0 ERRORS · RUNTIME READY";
-                    setTimeout(finishLoader, 400);
+                    statusNote.textContent = "0 ERRORS · INITIALIZING MATRIX...";
+                    // Trigger the Matrix screen takeover immediately after "No errors found."
+                    setTimeout(runMatrixScreenTakeover, 300);
                     return;
                 }
 
@@ -2521,12 +2617,12 @@ Type 'help' or click the chips above to run commands.</div>
                         clearInterval(tInterval);
                         item.cursorEl.style.display = 'none';
                         curLine++;
-                        setTimeout(typeNextLine, 280);
+                        setTimeout(typeNextLine, 260);
                     }
-                }, 38);
+                }, 36);
             }
 
-            setTimeout(typeNextLine, 200);
+            setTimeout(typeNextLine, 180);
         })();
 
         // 3. Precision Custom Cursor
@@ -3385,7 +3481,7 @@ Uptime: 99.98% · Latency: 14ms · Memory: Nominal`;
             cmdModal.classList.remove('is-open');
         }
 
-        cmdToggleBtn.addEventListener('click', openCmd);
+        if (cmdToggleBtn) cmdToggleBtn.addEventListener('click', openCmd);
         cmdModal.addEventListener('click', closeCmd);
 
         window.addEventListener('keydown', (e) => {
