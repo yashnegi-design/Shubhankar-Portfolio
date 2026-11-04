@@ -1616,7 +1616,12 @@
             overflow: hidden;
             height: 380px;
             border: 1px solid var(--line);
-            background: #000000;
+            background: #070c09;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(0, 255, 102, 0.08) 0%, transparent 70%),
+                linear-gradient(rgba(0, 255, 102, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 102, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 24px 24px, 24px 24px;
             cursor: pointer;
             transition: border-color 0.28s ease, transform 0.28s ease, box-shadow 0.28s ease;
             display: flex;
@@ -1746,7 +1751,7 @@
 
         .cta-channels {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             border-top: 1px solid var(--line);
             border-bottom: 1px solid var(--line);
         }
@@ -2806,7 +2811,7 @@
             <div class="interests-grid">
                 <!-- 01: Technology -->
                 <div class="interest-card" data-category="technology">
-                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="Technology Matrix Architecture" class="interest-bg-photo" loading="lazy">
+                    <img src="assets/images/beyond_technology.jpg" alt="Technology Circuit Matrix" class="interest-bg-photo" loading="lazy">
                     <div class="interest-matrix-overlay"></div>
                     <div class="interest-glitch-layer"></div>
                     <div class="interest-card-content">
@@ -2821,7 +2826,7 @@
 
                 <!-- 02: Travel -->
                 <div class="interest-card" data-category="travel">
-                    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80" alt="Travel Historic Landmarks" class="interest-bg-photo" loading="lazy">
+                    <img src="assets/images/beyond_travel.jpg" alt="Travel Historic Landmarks" class="interest-bg-photo" loading="lazy">
                     <div class="interest-matrix-overlay"></div>
                     <div class="interest-glitch-layer"></div>
                     <div class="interest-card-content">
@@ -2836,7 +2841,7 @@
 
                 <!-- 03: Trekking -->
                 <div class="interest-card" data-category="trekking">
-                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Himalayan Mountain Trekking" class="interest-bg-photo" loading="lazy">
+                    <img src="assets/images/beyond_trekking.jpg" alt="Himalayan Mountain Trekking" class="interest-bg-photo" loading="lazy">
                     <div class="interest-matrix-overlay"></div>
                     <div class="interest-glitch-layer"></div>
                     <div class="interest-card-content">
@@ -2851,7 +2856,7 @@
 
                 <!-- 04: Gaming -->
                 <div class="interest-card" data-category="gaming">
-                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" alt="Strategic Cyberspace Simulation" class="interest-bg-photo" loading="lazy">
+                    <img src="assets/images/beyond_gaming.jpg" alt="Strategic Cyberspace Simulation" class="interest-bg-photo" loading="lazy">
                     <div class="interest-matrix-overlay"></div>
                     <div class="interest-glitch-layer"></div>
                     <div class="interest-card-content">
@@ -2879,13 +2884,7 @@
                 <div class="cta-item">
                     <span class="note">Direct Email</span>
                     <a href="mailto:samnegi1844@gmail.com" class="cta-value">samnegi1844@gmail.com ↗</a>
-                    <span class="note">Preferred channel · Direct contact</span>
-                </div>
-
-                <div class="cta-item">
-                    <span class="note">Code &amp; Repositories</span>
-                    <a href="https://github.com/yashnegi-design" target="_blank" rel="noopener noreferrer" class="cta-value">github.com/yashnegi-design ↗</a>
-                    <span class="note">Active repositories &amp; open source</span>
+                    <span class="note">Primary communication channel</span>
                 </div>
 
                 <div class="cta-item">
@@ -3682,7 +3681,7 @@
                 profile: {
                     status: "200 OK",
                     size: "524 B",
-                    json: `{\n  <span class="json-key">"name"</span>: <span class="json-str">"Shubhankar Negi"</span>,\n  <span class="json-key">"education"</span>: <span class="json-str">"B.Tech CSE (Graphic Era Hill University)"</span>,\n  <span class="json-key">"locations"</span>: [<span class="json-str">"Pune, MH"</span>, <span class="json-str">"Almora, UK"</span>],\n  <span class="json-key">"email"</span>: <span class="json-str">"samnegi1844@gmail.com"</span>,\n  <span class="json-key">"github"</span>: <span class="json-str">"https://github.com/yashnegi-design"</span>,\n  <span class="json-key">"linkedin"</span>: <span class="json-str">"shubhankar-negi-248a0920b"</span>\n}`
+                    json: `{\n  <span class="json-key">"name"</span>: <span class="json-str">"Shubhankar Negi"</span>,\n  <span class="json-key">"education"</span>: <span class="json-str">"B.Tech CSE (Graphic Era Hill University)"</span>,\n  <span class="json-key">"locations"</span>: [<span class="json-str">"Pune, MH"</span>, <span class="json-str">"Almora, UK"</span>],\n  <span class="json-key">"email"</span>: <span class="json-str">"samnegi1844@gmail.com"</span>,\n  <span class="json-key">"linkedin"</span>: <span class="json-str">"shubhankar-negi-248a0920b"</span>\n}`
                 },
                 cv: {
                     status: "200 OK",
