@@ -1998,6 +1998,16 @@ HTML_CONTENT = r'''<!DOCTYPE html>
 
         }
 
+        @media (max-width: 520px) {
+            #gridToggleBtn .kbd-tag { display: none; }
+            #matrixBgToggleBtn span:last-child { display: none; }
+            #matrixBgToggleBtn { padding: 5px 8px; }
+        }
+
+        @media (max-width: 400px) {
+            .telemetry-pill { display: none; }
+        }
+
         /* TIER 3: Mobile Phones (max-width: 640px) */
         @media (max-width: 640px) {
             :root {
@@ -2309,9 +2319,9 @@ HTML_CONTENT = r'''<!DOCTYPE html>
                 <span>MATRIX BG</span>
             </button>
 
-            <!-- Blueprint Grid Toggle -->
-            <button class="header-btn" id="gridToggleBtn" title="Toggle Blueprint Grid Mode [G]">
-                <span>GRID</span>
+            <!-- Enter Matrix Construct Button -->
+            <button class="header-btn" id="gridToggleBtn" title="Enter Fullscreen Interactive Matrix Construct [G]">
+                <span>ENTER MATRIX</span>
                 <span class="kbd-tag">G</span>
             </button>
 
@@ -3801,31 +3811,19 @@ curl -f -s -o /dev/null http://localhost:8080/enterprise-portal/health
         // Theme is permanently locked to Dark Matrix mode.
         document.documentElement.dataset.theme = "dark";
 
-        // 14. Blueprint Grid Mode [G Key]
+        // 14. Enter Matrix Construct Controller (formerly Grid) [G or M Key]
         const gridBtn = document.getElementById('gridToggleBtn');
-        const hudDim = document.getElementById('hudDim');
-
-        function updateDimensions() {
-            if (hudDim) {
-                hudDim.textContent = `VIEWPORT: ${window.innerWidth} × ${window.innerHeight}px · GRID 32px · NODE: ALMORA/PUNE`;
-            }
+        if (gridBtn) {
+            gridBtn.addEventListener('click', () => {
+                playTactileClick(1200, 0.02);
+                toggleMatrixRain();
+            });
         }
-        window.addEventListener('resize', updateDimensions);
-        updateDimensions();
 
-        function toggleGrid() {
-            document.body.classList.toggle('show-grid');
-            gridBtn.classList.toggle('note--ink', document.body.classList.contains('show-grid'));
-        }
-        gridBtn.addEventListener('click', () => {
-            playTactileClick(1000, 0.02);
-            toggleGrid();
-        });
-
-        // Keyboard Shortcuts ([G] for Blueprint Grid)
+        // Keyboard Shortcuts ([G] or [M] to Enter Interactive Matrix Construct)
         window.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'g' && !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) {
-                toggleGrid();
+            if ((e.key.toLowerCase() === 'g' || e.key.toLowerCase() === 'm') && !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) {
+                toggleMatrixRain();
             }
         });
     
