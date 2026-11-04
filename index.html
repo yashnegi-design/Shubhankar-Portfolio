@@ -282,41 +282,141 @@
 
         body.show-grid .hud-dimensions { display: block; }
 
-        /* ===== MATRIX DIGITAL RAIN OVERLAY (PURE BLACK & MATRIX GREEN) ===== */
-        #matrixCanvas {
+        /* ===== INTERACTIVE MATRIX CONSTRUCT OVERLAY ===== */
+        .matrix-construct {
             position: fixed;
             inset: 0;
             width: 100vw;
             height: 100vh;
-            pointer-events: none;
             z-index: 9998;
+            pointer-events: none;
             opacity: 0;
             background: #000000;
             transition: opacity 0.4s ease;
+            overflow: hidden;
         }
 
-        body.matrix-active #matrixCanvas {
+        body.matrix-active .matrix-construct {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .matrix-exit-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: #00ff66;
-            color: #000;
-            font-family: var(--font-mono);
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 4px;
-            display: none;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+        #matrixCanvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            cursor: crosshair;
         }
 
-        body.matrix-active .matrix-exit-btn { display: block; }
+        .matrix-hud {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: clamp(14px, 2.5vw, 28px);
+            z-index: 9999;
+        }
+
+        .matrix-hud-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .matrix-hud-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: #00ff66;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(0, 255, 102, 0.4);
+            padding: 6px 14px;
+            border-radius: 999px;
+            letter-spacing: 0.06em;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 16px rgba(0, 255, 102, 0.2);
+        }
+
+        .matrix-hud-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff66;
+            box-shadow: 0 0 8px #00ff66;
+            animation: crtBlink 0.6s infinite step-end;
+        }
+
+        .matrix-hud-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .matrix-tool-btn {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #00ff66;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(0, 255, 102, 0.45);
+            padding: 7px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(8px);
+        }
+
+        .matrix-tool-btn:hover, .matrix-tool-btn.is-active {
+            background: rgba(0, 255, 102, 0.2);
+            border-color: #00ff66;
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(0, 255, 102, 0.4);
+        }
+
+        .matrix-exit-btn {
+            background: #00ff66;
+            color: #000000;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 7px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.5);
+        }
+
+        .matrix-exit-btn:hover {
+            background: #ffffff;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+            transform: scale(1.03);
+        }
+
+        .matrix-hud-hint {
+            align-self: center;
+            font-family: var(--font-mono);
+            font-size: clamp(0.7rem, 1.4vw, 0.82rem);
+            color: rgba(0, 255, 102, 0.85);
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(0, 255, 102, 0.3);
+            padding: 6px 18px;
+            border-radius: 999px;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(6px);
+            pointer-events: none;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
 
         /* ===== CUSTOM PRECISION CURSOR ===== */
         @media (hover: hover) and (pointer: fine) {
@@ -855,9 +955,7 @@
         /* ===== MANIFESTO MATRIX GLITCH STYLES ===== */
         .manifesto-line-wrap {
             position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
+            display: block;
             border-bottom: 1px dashed var(--line);
             padding-bottom: 0.6rem;
             margin-bottom: 1.2rem;
@@ -1500,7 +1598,7 @@
 
         .cert-row:last-child { border-bottom: none; }
 
-        /* ===== [05] BEYOND CODE ===== */
+        /* ===== [05] BEYOND CODE: MATRIX GLITCH PHOTO CARDS ===== */
         .interests-section {
             padding-block: var(--section-gap);
         }
@@ -1512,24 +1610,130 @@
             margin-top: 2rem;
         }
 
-        .interest-item {
+        .interest-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 380px;
             border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 24px;
-            background: var(--bg-raised);
+            background: #000000;
+            cursor: pointer;
+            transition: border-color 0.28s ease, transform 0.28s ease, box-shadow 0.28s ease;
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            transition: transform var(--dur-1) var(--ease-out), border-color var(--dur-1);
+            justify-content: flex-end;
         }
 
-        .interest-item:hover {
-            transform: translateY(-3px);
-            border-color: var(--line-strong);
+        .interest-card:hover {
+            border-color: #00ff66;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 255, 102, 0.22);
         }
 
-        .interest-item h3 { font-size: var(--step-0); font-weight: 500; color: var(--ink); }
-        .interest-item p { font-size: var(--step--1); color: var(--muted); line-height: 1.6; }
+        .interest-bg-photo {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(125%) brightness(0.48);
+            transition: filter 0.4s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            z-index: 1;
+        }
+
+        .interest-card:hover .interest-bg-photo {
+            filter: grayscale(30%) contrast(135%) brightness(0.72);
+            transform: scale(1.08);
+        }
+
+        /* Scanlines & Holographic Matrix Shading */
+        .interest-matrix-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: linear-gradient(rgba(0, 0, 0, 0.4) 50%, rgba(0, 255, 102, 0.08) 50%),
+                        radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.85) 100%);
+            background-size: 100% 4px, 100% 100%;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Matrix Digital Glitch Slicing on Hover */
+        .interest-glitch-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 102, 0.15) 0px,
+                rgba(0, 255, 102, 0.15) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+            mix-blend-mode: screen;
+        }
+
+        .interest-card:hover .interest-glitch-layer {
+            opacity: 1;
+            animation: matrixScanGlitch 0.35s infinite steps(2);
+        }
+
+        @keyframes matrixScanGlitch {
+            0% { transform: translateY(0); opacity: 0.8; }
+            50% { transform: translateY(-4px); opacity: 1; filter: drop-shadow(0 0 6px #00ff66); }
+            100% { transform: translateY(2px); opacity: 0.7; }
+        }
+
+        .interest-card-content {
+            position: relative;
+            z-index: 4;
+            padding: 22px 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.7) 65%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .interest-hud-tag {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: #00ff66;
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .glitch-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00ff66;
+            box-shadow: 0 0 6px #00ff66;
+            animation: crtBlink 0.8s infinite step-end;
+        }
+
+        .interest-card h3 {
+            font-size: var(--step-0);
+            color: #ffffff;
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.01em;
+            transition: color 0.2s ease;
+        }
+
+        .interest-card:hover h3 {
+            color: #00ff66;
+        }
+
+        .interest-card p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            line-height: 1.55;
+            margin: 0;
+        }
 
         /* ===== [06] NEXT / CONTACT ===== */
         .cta-section {
@@ -2134,7 +2338,7 @@
             }
 
             .telemetry-pill #headerClock {
-                display: none;
+                display: inline-block;
             }
 
             .hero__human {
@@ -2172,9 +2376,26 @@
     <div class="blueprint-grid-overlay" aria-hidden="true"></div>
     <div class="hud-dimensions" id="hudDim">VIEWPORT: 1440 × 900 · GRID 32px · NODE: ALMORA/PUNE</div>
 
-    <!-- Matrix Code Rain Canvas -->
-    <canvas id="matrixCanvas"></canvas>
-    <button class="matrix-exit-btn" id="exitMatrixBtn">EXIT MATRIX [ESC]</button>
+    <!-- ===== INTERACTIVE MATRIX CONSTRUCT OVERLAY ===== -->
+    <div class="matrix-construct" id="matrixConstruct">
+        <canvas id="matrixCanvas"></canvas>
+        <div class="matrix-hud" id="matrixHud">
+            <div class="matrix-hud-top">
+                <div class="matrix-hud-badge">
+                    <span class="matrix-hud-dot"></span>
+                    <span>MATRIX_CONSTRUCT // LEVEL_0 · OPERATOR ACTIVE</span>
+                </div>
+                <div class="matrix-hud-actions">
+                    <button class="matrix-tool-btn" id="matrixBulletBtn" title="Toggle Bullet Time Slow-Motion">⏱ BULLET TIME</button>
+                    <button class="matrix-tool-btn" id="matrixGlitchBtn" title="Trigger EMP Pulse Glitch">⚡ EMP GLITCH</button>
+                    <button class="matrix-exit-btn" id="exitMatrixBtn" title="Exit to Reality [ESC]">EXIT MATRIX [ESC]</button>
+                </div>
+            </div>
+            <div class="matrix-hud-hint">
+                <span>[ CLICK ] TO EMIT DISRUPTION SHOCKWAVE &bull; [ TYPE ANY KEYS ] TO INJECT CODE &bull; [ MOVE MOUSE ] TO WARP RAIN</span>
+            </div>
+        </div>
+    </div>
 
     <!-- Precision Crosshair Cursor -->
     <div class="tech-cursor" id="techCursor" aria-hidden="true"></div>
@@ -2182,17 +2403,13 @@
 
     <!-- ===== SITE HEADER ===== -->
     <header class="site-header wrap">
-        <a href="#hero" class="brand" aria-label="Shubhankar Negi, home">
-            <!-- Geometric Monogram SVG -->
+        <a href="#hero" class="brand" aria-label="Home">
+            <!-- Geometric Monogram SVG (SN) -->
             <svg class="brand__mark" viewBox="0 0 68 40" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M 22 10 C 12 10 8 16 14 21 C 22 26 22 32 10 32"></path>
                 <path d="M 38 32 V 10 L 56 32 V 10"></path>
                 <circle cx="62" cy="32" r="2.2" fill="currentColor"></circle>
             </svg>
-            <span class="brand__name">
-                <span>Shubhankar Negi</span>
-                <span class="brand__role">/ full stack</span>
-            </span>
         </a>
 
         <nav class="nav" aria-label="Main Navigation">
@@ -2206,21 +2423,11 @@
         </nav>
 
         <div class="header__actions">
-            <!-- Live L&T Telemetry Pill -->
-            <div class="telemetry-pill" title="Current live employment node">
+            <!-- Live Time Pill -->
+            <div class="telemetry-pill" title="Live Local Time (IST)">
                 <span class="telemetry-dot"></span>
-                <span>L&amp;T PUNE</span>
-                <span class="note--accent" id="headerClock">12:00 IST</span>
+                <span class="note--accent" id="headerClock">12:00:00 IST</span>
             </div>
-
-            <!-- Sound Synthesis Toggle -->
-            <button class="header-btn" id="soundToggleBtn" title="Toggle Haptic Sound Synthesis">
-                <i class="fa-solid fa-volume-xmark" id="soundIcon"></i>
-                <span id="soundLabel">SFX</span>
-            </button>
-
-            <!-- Theme Toggle -->
-            
 
             <!-- Blueprint Grid Toggle -->
             <button class="header-btn" id="gridToggleBtn" title="Toggle Blueprint Grid Mode [G]">
@@ -2228,8 +2435,11 @@
                 <span class="kbd-tag">G</span>
             </button>
 
-            <!-- Command Palette Toggle -->
-            
+            <!-- Mobile Hamburger Toggle -->
+            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation menu">
+                <span class="nav-bar-icon"></span>
+                <span class="nav-bar-icon"></span>
+            </button>
         </div>
 
         <!-- Scroll Depth Calibrated Ruler -->
@@ -2237,6 +2447,25 @@
             <div class="scroll-ruler-bar" id="scrollRulerBar"></div>
         </div>
     </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true">
+        <div class="mobile-nav-backdrop" id="mobileNavBackdrop"></div>
+        <div class="mobile-nav-panel">
+            <div class="mobile-nav-head">
+                <span class="note--accent">MENU // NAVIGATION</span>
+                <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">&times;</button>
+            </div>
+            <nav class="mobile-nav-links">
+                <a href="#work" class="mob-link"><span>01 // Selected Work</span> <span class="arrow">&rarr;</span></a>
+                <a href="#philosophy" class="mob-link"><span>02 // Philosophy</span> <span class="arrow">&rarr;</span></a>
+                <a href="#capabilities" class="mob-link"><span>03 // API &amp; Stack</span> <span class="arrow">&rarr;</span></a>
+                <a href="#background" class="mob-link"><span>04 // Credentials</span> <span class="arrow">&rarr;</span></a>
+                <a href="#interests" class="mob-link"><span>05 // Beyond Code</span> <span class="arrow">&rarr;</span></a>
+                <a href="#contact" class="mob-link"><span>06 // Contact</span> <span class="arrow">&rarr;</span></a>
+            </nav>
+        </div>
+    </div>
 
     <!-- ===== MAIN CONTENT ===== -->
     <main>
@@ -2247,24 +2476,19 @@
             <canvas id="matrixHeroCanvas"></canvas>
 
             <div class="hero__top note fade-child">
-                <span>Shubhankar Negi · Full Stack Developer</span>
-                <span>Base camp · Pune &amp; Almora · 29.59° N, 79.65° E</span>
-                <span class="note--success">● Active @ Larsen &amp; Toubro (L&amp;T)</span>
+                <span>Base camp · Almora &amp; Pune · 29.59° N, 79.65° E</span>
+                <span>Engineering &amp; Systems Architecture</span>
+                <span class="note--success">● Status: Production Active</span>
             </div>
 
             <div class="hero__title fade-child">
                 <h1 class="hero__human display">I build software.</h1>
                 <p class="hero__machine h2" id="streamTarget">
-                    Full Stack Developer at <span class="highlight">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.
+                    Turning complex enterprise requirements into resilient, high-throughput production systems.
                 </p>
                 <div class="hero__notes">
-                    <p class="note"><span class="note--accent">●</span> human · engineered with precision</p>
-                    <p class="note">
-                        <span class="note--accent">◆</span> machine · 
-                        <span id="tokenMetric">24</span> tokens · 
-                        <span id="latencyMetric">140ms</span> · 
-                        <button class="stream-btn" id="streamCycleBtn">↺ regenerate focus</button>
-                    </p>
+                    <p class="note"><span class="note--accent">●</span> engineered with precision</p>
+                    <p class="note"><span class="note--accent">◆</span> 99.98% operational telemetry</p>
                 </div>
             </div>
 
@@ -2286,28 +2510,25 @@
         <section class="manifesto wrap reveal-on-scroll" id="philosophy">
             <header class="section-head">
                 <span class="note note--ink">[01] Philosophy</span>
-                <span class="note">fig. 01 · wireframe → enterprise production</span>
+                <span class="note">Core Engineering Principles</span>
             </header>
 
             <div class="manifesto-line-wrap">
                 <p class="manifesto-line h1">
                     <span>Keep the </span><span class="matrix-glitch-word" data-word="logic.">logic.</span>
                 </p>
-                <span class="wf-dim note">↤ 12 col ↦</span>
             </div>
 
             <div class="manifesto-line-wrap">
                 <p class="manifesto-line h1">
                     <span class="matrix-glitch-word" data-word="Solve">Solve</span><span> what stands</span>
                 </p>
-                <span class="wf-dim note">font-size: var(--step-4)</span>
             </div>
 
             <div class="manifesto-line-wrap">
                 <p class="manifesto-line h1">
                     <span>in its </span><span class="matrix-glitch-word" data-word="way.">way.</span>
                 </p>
-                <span class="wf-dim note">ls −0.05em</span>
             </div>
 
             <div class="manifesto__body grid-12">
@@ -2583,25 +2804,64 @@
             </header>
 
             <div class="interests-grid">
-                <div class="interest-item">
-                    <span class="note note--accent">01</span>
-                    <h3>Technology</h3>
-                    <p>Continuously exploring full-stack patterns, container orchestration, and high-performance computing frameworks.</p>
+                <!-- 01: Technology -->
+                <div class="interest-card" data-category="technology">
+                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="Technology Matrix Architecture" class="interest-bg-photo" loading="lazy">
+                    <div class="interest-matrix-overlay"></div>
+                    <div class="interest-glitch-layer"></div>
+                    <div class="interest-card-content">
+                        <div class="interest-hud-tag">
+                            <span class="glitch-dot"></span>
+                            <span>[01 // TECH_MATRIX]</span>
+                        </div>
+                        <h3>Technology</h3>
+                        <p>Exploring low-level distributed systems, compiler architecture, and resilient microservice design.</p>
+                    </div>
                 </div>
-                <div class="interest-item">
-                    <span class="note note--accent">02</span>
-                    <h3>Travel</h3>
-                    <p>Visiting historical landmarks of geographic, architectural, and cultural heritage across India.</p>
+
+                <!-- 02: Travel -->
+                <div class="interest-card" data-category="travel">
+                    <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=800&q=80" alt="Travel Historic Landmarks" class="interest-bg-photo" loading="lazy">
+                    <div class="interest-matrix-overlay"></div>
+                    <div class="interest-glitch-layer"></div>
+                    <div class="interest-card-content">
+                        <div class="interest-hud-tag">
+                            <span class="glitch-dot"></span>
+                            <span>[02 // TRAVEL_GEO]</span>
+                        </div>
+                        <h3>Travel</h3>
+                        <p>Studying geometric heritage, centuries-old stonework, and architectural history across India.</p>
+                    </div>
                 </div>
-                <div class="interest-item">
-                    <span class="note note--accent">03</span>
-                    <h3>Trekking</h3>
-                    <p>Himalayan high-altitude trail trekking to build endurance, mental clarity, and adaptive problem solving.</p>
+
+                <!-- 03: Trekking -->
+                <div class="interest-card" data-category="trekking">
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80" alt="Himalayan Mountain Trekking" class="interest-bg-photo" loading="lazy">
+                    <div class="interest-matrix-overlay"></div>
+                    <div class="interest-glitch-layer"></div>
+                    <div class="interest-card-content">
+                        <div class="interest-hud-tag">
+                            <span class="glitch-dot"></span>
+                            <span>[03 // HIMALAYA_TREK]</span>
+                        </div>
+                        <h3>Trekking</h3>
+                        <p>High-altitude Himalayan ridges that foster endurance, route calculation, and mental resilience.</p>
+                    </div>
                 </div>
-                <div class="interest-item">
-                    <span class="note note--accent">04</span>
-                    <h3>Gaming</h3>
-                    <p>Strategic virtual worlds that test spatial reasoning, tactical reflexes, and synchronized team cooperation.</p>
+
+                <!-- 04: Gaming -->
+                <div class="interest-card" data-category="gaming">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80" alt="Strategic Cyberspace Simulation" class="interest-bg-photo" loading="lazy">
+                    <div class="interest-matrix-overlay"></div>
+                    <div class="interest-glitch-layer"></div>
+                    <div class="interest-card-content">
+                        <div class="interest-hud-tag">
+                            <span class="glitch-dot"></span>
+                            <span>[04 // STRATEGY_SIM]</span>
+                        </div>
+                        <h3>Gaming</h3>
+                        <p>Complex virtual tactical mechanics testing spatial awareness, game theory, and team coordination.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2619,13 +2879,13 @@
                 <div class="cta-item">
                     <span class="note">Direct Email</span>
                     <a href="mailto:samnegi1844@gmail.com" class="cta-value">samnegi1844@gmail.com ↗</a>
-                    <span class="note">Fast response time</span>
+                    <span class="note">Preferred channel · Direct contact</span>
                 </div>
 
                 <div class="cta-item">
-                    <span class="note">Telephone / WhatsApp</span>
-                    <a href="tel:+918650051616" class="cta-value">+91 86500 51616 ↗</a>
-                    <span class="note">Voice &amp; WhatsApp communication</span>
+                    <span class="note">Code &amp; Repositories</span>
+                    <a href="https://github.com/yashnegi-design" target="_blank" rel="noopener noreferrer" class="cta-value">github.com/yashnegi-design ↗</a>
+                    <span class="note">Active repositories &amp; open source</span>
                 </div>
 
                 <div class="cta-item">
@@ -2642,7 +2902,7 @@
     <footer class="site-footer wrap">
         <div class="footer-wrap">
             <div>
-                <span>Shubhankar Negi · Full Stack Developer · Larsen &amp; Toubro (L&amp;T), Pune</span>
+                <span>&copy; 2026 Shubhankar Negi &middot; Built for production resilience</span>
             </div>
             <div style="display:flex; gap:1.5rem; align-items:center;">
                 <span>29.59° N, 79.65° E (Almora) · 18.52° N, 73.85° E (Pune)</span>
@@ -2706,11 +2966,13 @@
 
         const soundBtn = document.getElementById('soundToggleBtn');
         const soundIcon = document.getElementById('soundIcon');
-        soundBtn.addEventListener('click', () => {
-            sfxEnabled = !sfxEnabled;
-            soundIcon.className = sfxEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
-            if (sfxEnabled) playTactileClick(1200, 0.04);
-        });
+        if (soundBtn && soundIcon) {
+            soundBtn.addEventListener('click', () => {
+                sfxEnabled = !sfxEnabled;
+                soundIcon.className = sfxEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+                if (sfxEnabled) playTactileClick(1200, 0.04);
+            });
+        }
 
         
         // Interactive Matrix Glitch Effect on Main Words (Manifesto)
@@ -3036,47 +3298,10 @@
 
         })();
 
-        // 7. Interactive Machine Token Typing Streamer
+        // 7. Machine Focus Streamer
         (function initTokenStreamer() {
             const streamTarget = document.getElementById('streamTarget');
-            const tokenEl = document.getElementById('tokenMetric');
-            const latencyEl = document.getElementById('latencyMetric');
-            const cycleBtn = document.getElementById('streamCycleBtn');
-
-            const prompts = [
-                "Full Stack Developer at <span class=\"highlight\">Larsen &amp; Toubro</span>, turning complex requirements into resilient production code.",
-                "Computer vision developer optimizing <span class=\"highlight\">real-time OpenCV matrix pipelines</span> with 90% tested sketch accuracy.",
-                "Backend engineer building <span class=\"highlight\">robust multi-tier Java &amp; Python services</span> with Tomcat &amp; MySQL architecture."
-            ];
-
-            let activeIdx = 0;
-            let isStreaming = false;
-
-            function streamText(htmlString) {
-                if (isStreaming) return;
-                isStreaming = true;
-                streamTarget.innerHTML = '';
-                const tokens = htmlString.split(' ');
-                let tIdx = 0;
-                tokenEl.textContent = tokens.length;
-                latencyEl.textContent = (tokens.length * 28 + 60) + 'ms';
-
-                const interval = setInterval(() => {
-                    streamTarget.innerHTML += tokens[tIdx] + ' ';
-                    playTactileClick(1400, 0.01);
-                    tIdx++;
-                    if (tIdx >= tokens.length) {
-                        clearInterval(interval);
-                        isStreaming = false;
-                    }
-                }, 40);
-            }
-
-            cycleBtn.addEventListener('click', () => {
-                playTactileClick(800, 0.03);
-                activeIdx = (activeIdx + 1) % prompts.length;
-                streamText(prompts[activeIdx]);
-            });
+            if (!streamTarget) return;
         })();
 
         // 8. 3-Stage Work Architecture Component with Live Interactive Simulations
@@ -3457,7 +3682,7 @@
                 profile: {
                     status: "200 OK",
                     size: "524 B",
-                    json: `{\n  <span class="json-key">"name"</span>: <span class="json-str">"Shubhankar Negi"</span>,\n  <span class="json-key">"education"</span>: <span class="json-str">"B.Tech CSE (Graphic Era Hill University)"</span>,\n  <span class="json-key">"locations"</span>: [<span class="json-str">"Pune, MH"</span>, <span class="json-str">"Almora, UK"</span>],\n  <span class="json-key">"email"</span>: <span class="json-str">"samnegi1844@gmail.com"</span>,\n  <span class="json-key">"phone"</span>: <span class="json-str">"+91 86500 51616"</span>,\n  <span class="json-key">"linkedin"</span>: <span class="json-str">"shubhankar-negi-248a0920b"</span>\n}`
+                    json: `{\n  <span class="json-key">"name"</span>: <span class="json-str">"Shubhankar Negi"</span>,\n  <span class="json-key">"education"</span>: <span class="json-str">"B.Tech CSE (Graphic Era Hill University)"</span>,\n  <span class="json-key">"locations"</span>: [<span class="json-str">"Pune, MH"</span>, <span class="json-str">"Almora, UK"</span>],\n  <span class="json-key">"email"</span>: <span class="json-str">"samnegi1844@gmail.com"</span>,\n  <span class="json-key">"github"</span>: <span class="json-str">"https://github.com/yashnegi-design"</span>,\n  <span class="json-key">"linkedin"</span>: <span class="json-str">"shubhankar-negi-248a0920b"</span>\n}`
                 },
                 cv: {
                     status: "200 OK",
@@ -3575,53 +3800,184 @@ curl -f -s -o /dev/null http://localhost:8080/enterprise-portal/health
             }
         })();
 
-        // 12. Matrix Digital Rain Overlay (Solid Pitch Black Canvas + Matrix Green Characters)
+        // 12. Fun & Highly Interactive Matrix Digital Construct
         const matrixCanvas = document.getElementById('matrixCanvas');
-        const mCtx = matrixCanvas.getContext('2d');
+        const mCtx = matrixCanvas ? matrixCanvas.getContext('2d') : null;
         const exitMatrixBtn = document.getElementById('exitMatrixBtn');
+        const bulletBtn = document.getElementById('matrixBulletBtn');
+        const glitchBtn = document.getElementById('matrixGlitchBtn');
         let matrixInterval = null;
+
+        // Interactive Matrix State
+        let isBulletTime = false;
+        let shockwaves = [];
+        let mouseX = -100, mouseY = -100;
+        let cols = 0;
+        let drops = [];
+        let speeds = [];
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
+
+        function initMatrixGrid() {
+            if (!matrixCanvas) return;
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight;
+            cols = Math.floor(matrixCanvas.width / 16);
+            drops = Array(cols).fill(1).map(() => Math.floor(Math.random() * -30));
+            speeds = Array(cols).fill(1).map(() => Math.random() * 0.5 + 0.8);
+            shockwaves = [];
+            mCtx.fillStyle = '#000000';
+            mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+        }
+
+        window.addEventListener('resize', () => {
+            if (document.body.classList.contains('matrix-active')) initMatrixGrid();
+        });
+
+        // Mouse tracking inside matrix
+        window.addEventListener('mousemove', (e) => {
+            if (!document.body.classList.contains('matrix-active')) return;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Click to trigger expanding EMP disruption shockwave
+        if (matrixCanvas) {
+            matrixCanvas.addEventListener('click', (e) => {
+                shockwaves.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    radius: 0,
+                    maxRadius: Math.min(window.innerWidth, window.innerHeight) * 0.45,
+                    opacity: 1
+                });
+                playTactileClick(1500, 0.03);
+            });
+        }
+
+        // Typing ANY key in matrix injects new code stream at mouse
+        window.addEventListener('keydown', (e) => {
+            if (!document.body.classList.contains('matrix-active')) return;
+            if (e.key === 'Escape') {
+                toggleMatrixRain();
+                return;
+            }
+
+            // If user types a visible character, inject a stream
+            if (e.key.length === 1) {
+                const targetCol = Math.floor(mouseX / 16);
+                const colIdx = (targetCol >= 0 && targetCol < cols) ? targetCol : Math.floor(Math.random() * cols);
+                drops[colIdx] = 0;
+                speeds[colIdx] = 2.5; // High speed injected stream
+                playTactileClick(800 + Math.random() * 600, 0.02);
+            }
+        });
+
+        // Toggle Bullet Time mode
+        if (bulletBtn) {
+            bulletBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isBulletTime = !isBulletTime;
+                bulletBtn.classList.toggle('is-active', isBulletTime);
+                bulletBtn.textContent = isBulletTime ? '⚡ NORMAL SPEED' : '⏱ BULLET TIME';
+                playTactileClick(1200, 0.03);
+            });
+        }
+
+        // EMP Glitch Button
+        if (glitchBtn) {
+            glitchBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playTactileClick(600, 0.06);
+                // Trigger electrical displacement
+                if (mCtx) {
+                    mCtx.fillStyle = '#00ff66';
+                    mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                    setTimeout(() => {
+                        mCtx.fillStyle = '#000000';
+                        mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                    }, 40);
+                }
+            });
+        }
 
         function toggleMatrixRain() {
             document.body.classList.toggle('matrix-active');
             if (document.body.classList.contains('matrix-active')) {
-                matrixCanvas.width = window.innerWidth;
-                matrixCanvas.height = window.innerHeight;
-                mCtx.fillStyle = '#000000';
-                mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-                const cols = Math.floor(matrixCanvas.width / 16);
-                const drops = Array(cols).fill(1);
-                const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
+                initMatrixGrid();
 
                 matrixInterval = setInterval(() => {
-                    mCtx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+                    const fadeAlpha = isBulletTime ? 0.08 : 0.22;
+                    mCtx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
                     mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-                    mCtx.fillStyle = '#00ff66';
-                    mCtx.font = 'bold 14px monospace';
+                    mCtx.font = 'bold 15px "Geist Mono", monospace';
                     mCtx.shadowBlur = 0;
                     mCtx.shadowColor = 'transparent';
 
+                    const baseSpeed = isBulletTime ? 0.28 : 1;
+
                     for (let i = 0; i < drops.length; i++) {
                         const char = chars[Math.floor(Math.random() * chars.length)];
-                        mCtx.fillText(char, i * 16, drops[i] * 16);
+                        const x = i * 16;
+                        const y = drops[i] * 16;
 
-                        if (drops[i] * 16 > matrixCanvas.height && Math.random() > 0.975) {
-                            drops[i] = 0;
+                        // Check mouse proximity for deflection & illumination
+                        const distToMouse = Math.hypot(x - mouseX, y - mouseY);
+                        const isNearCursor = distToMouse < 60;
+
+                        if (drops[i] >= 0) {
+                            if (isNearCursor) {
+                                // Warp bright white near mouse cursor
+                                mCtx.fillStyle = '#ffffff';
+                                mCtx.fillText(char, x, y);
+                            } else if (Math.random() > 0.92) {
+                                // Bright glowing leading tip
+                                mCtx.fillStyle = '#e6ffe6';
+                                mCtx.fillText(char, x, y);
+                            } else {
+                                // Matrix green body
+                                mCtx.fillStyle = '#00ff66';
+                                mCtx.fillText(char, x, y);
+                            }
                         }
-                        drops[i]++;
+
+                        // Reset when exceeding screen
+                        if (y > matrixCanvas.height && Math.random() > 0.975) {
+                            drops[i] = 0;
+                            speeds[i] = Math.random() * 0.5 + 0.8;
+                        }
+
+                        // Accelerate drops near cursor
+                        const dropSpeed = isNearCursor ? (speeds[i] * 2.2) : speeds[i];
+                        drops[i] += baseSpeed * dropSpeed;
                     }
-                }, 33);
+
+                    // Render Disruption Shockwaves
+                    for (let s = shockwaves.length - 1; s >= 0; s--) {
+                        const sw = shockwaves[s];
+                        sw.radius += isBulletTime ? 4 : 12;
+                        sw.opacity -= isBulletTime ? 0.015 : 0.04;
+
+                        if (sw.opacity <= 0 || sw.radius >= sw.maxRadius) {
+                            shockwaves.splice(s, 1);
+                            continue;
+                        }
+
+                        mCtx.beginPath();
+                        mCtx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+                        mCtx.strokeStyle = `rgba(0, 255, 102, ${sw.opacity})`;
+                        mCtx.lineWidth = 3;
+                        mCtx.stroke();
+                    }
+                }, 30);
             } else {
                 clearInterval(matrixInterval);
-                mCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                if (mCtx) mCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
             }
         }
 
-        exitMatrixBtn.addEventListener('click', toggleMatrixRain);
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && document.body.classList.contains('matrix-active')) {
-                toggleMatrixRain();
-            }
-        });
+        if (exitMatrixBtn) {
+            exitMatrixBtn.addEventListener('click', toggleMatrixRain);
+        }
 
         // Theme is permanently locked to Dark Matrix mode.
         document.documentElement.dataset.theme = "dark";
