@@ -598,13 +598,85 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         
         .fade-child {
             opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(28px) scale(0.985);
+            filter: blur(10px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, filter;
         }
 
         .fade-child.is-revealed {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* Kinetic Hero Title & Living Motion */
+        .hero__title {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .hero-title-text {
+            cursor: pointer;
+            display: inline-block;
+            transition: text-shadow 0.25s ease;
+        }
+
+        .hero-title-text:hover {
+            text-shadow: 0 0 16px rgba(0, 255, 102, 0.45), 2px 0 #00ff66, -2px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .streamer-cursor {
+            color: #00ff66;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 2px;
+            text-shadow: 0 0 10px #00ff66;
+            animation: cursorBlink 0.85s steps(2, start) infinite;
+        }
+
+        @keyframes cursorBlink {
+            to { visibility: hidden; }
+        }
+
+        /* Live Pulsing Radar Status Dot */
+        .live-radar-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00ff66;
+            box-shadow: 0 0 8px #00ff66;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+        }
+
+        .live-radar-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid #00ff66;
+            animation: radarPing 2.2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+            opacity: 0;
+        }
+
+        @keyframes radarPing {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(2.4); opacity: 0; }
+        }
+
+        @media (pointer: coarse) {
+            .hero__title {
+                animation: heroTouchFloat 5s ease-in-out infinite alternate;
+            }
+            @keyframes heroTouchFloat {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(-6px); }
+            }
         }
     
         /* Clean Fluid Fade-in on Scroll (Zero Clutter) */
@@ -2364,17 +2436,22 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             <div class="hero__top note fade-child">
                 <span>Base camp · Almora &amp; Pune · 29.59° N, 79.65° E</span>
                 <span>Engineering &amp; Systems Architecture</span>
-                <span class="note--success">● Status: Production Active</span>
+                <span class="note--success" style="display:inline-flex; align-items:center; gap:7px;">
+                    <span class="live-radar-dot"></span>
+                    <span>Status: Production Active</span>
+                </span>
             </div>
 
             <div class="hero__title fade-child">
-                <h1 class="hero__human display">I build software.</h1>
+                <h1 class="hero__human display" id="heroTitle">
+                    <span class="hero-title-text" id="heroTitleText" data-text="I build software.">I build software.</span>
+                </h1>
                 <p class="hero__machine h2" id="streamTarget">
-                    Turning complex enterprise requirements into resilient, high-throughput production systems.
+                    <span class="streamer-text" id="streamerText">Turning complex enterprise requirements into resilient, high-throughput production systems.</span><span class="streamer-cursor">_</span>
                 </p>
                 <div class="hero__notes">
                     <p class="note"><span class="note--accent">●</span> engineered with precision</p>
-                    <p class="note"><span class="note--accent">◆</span> 99.98% operational telemetry</p>
+                    <p class="note"><span class="note--accent">◆</span> <span id="telemetryStat">99.98% operational telemetry · 14ms</span></p>
                 </div>
             </div>
 
@@ -2803,15 +2880,65 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         
 
     
-        // 1. Clean Fade-In Reveal Controller (Clean & Spacious)
+        // Decrypt unscramble animation utility
+        function decryptText(element, finalText, speed = 25, onComplete = null) {
+            if (!element) return;
+            const chars = "010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃ";
+            let iteration = 0;
+            const originalLength = finalText.length;
+            
+            clearInterval(element._decryptInterval);
+            element._decryptInterval = setInterval(() => {
+                element.textContent = finalText
+                    .split("")
+                    .map((char, index) => {
+                        if (char === " " || char === "." || char === "'" || char === "-") return char;
+                        if (index < iteration) {
+                            return finalText[index];
+                        }
+                        return chars[Math.floor(Math.random() * chars.length)];
+                    })
+                    .join("");
+
+                if (iteration >= originalLength) {
+                    clearInterval(element._decryptInterval);
+                    element.textContent = finalText;
+                    if (onComplete) onComplete();
+                }
+
+                iteration += 1 / 2;
+            }, speed);
+        }
+
+        // 1. Kinetic Hero Entrance & Decrypt Animation Controller
         function triggerHeroFadeIn() {
             const heroElements = document.querySelectorAll('.hero .fade-child');
             heroElements.forEach((el, idx) => {
                 setTimeout(() => {
                     el.classList.add('is-revealed');
-                }, idx * 120 + 80);
+                }, idx * 140 + 80);
             });
+
+            // Decrypt hero title after brief entrance delay
+            setTimeout(() => {
+                const titleEl = document.getElementById('heroTitleText');
+                if (titleEl) {
+                    decryptText(titleEl, "I build software.", 28);
+                }
+            }, 250);
         }
+
+        // Interactive Title Re-decrypt on Hover
+        (function initTitleInteraction() {
+            const titleContainer = document.getElementById('heroTitle');
+            const titleEl = document.getElementById('heroTitleText');
+            if (titleContainer && titleEl) {
+                titleContainer.addEventListener('mouseenter', () => {
+                    playTactileClick(1300, 0.02);
+                    decryptText(titleEl, "I build software.", 22);
+                });
+            }
+        })();
 
         // 2. Retro CRT Terminal Loader with Cinematic Matrix Screen Takeover
         (function initCrtLoader() {
@@ -3127,10 +3254,94 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             setInterval(renderMatrix, 35);
         })();
 
-        // 7. Machine Focus Streamer
+        // 7. Dynamic Machine Focus Streamer (Continuous Typing Motion)
         (function initTokenStreamer() {
-            const streamTarget = document.getElementById('streamTarget');
-            if (!streamTarget) return;
+            const streamerEl = document.getElementById('streamerText');
+            if (!streamerEl) return;
+
+            const statements = [
+                "Turning complex enterprise requirements into resilient, high-throughput production systems.",
+                "Architecting distributed backend microservices with sub-15ms query execution.",
+                "Optimizing real-time computer vision matrices and OpenCV algorithmic pipelines.",
+                "Engineering robust, high-performance web systems from Almora to Pune."
+            ];
+
+            let statementIdx = 0;
+            let charIdx = 0;
+            let isDeleting = false;
+
+            function typeLoop() {
+                const currentStr = statements[statementIdx];
+
+                if (!isDeleting) {
+                    streamerEl.textContent = currentStr.substring(0, charIdx + 1);
+                    charIdx++;
+
+                    if (charIdx === currentStr.length) {
+                        isDeleting = true;
+                        setTimeout(typeLoop, 3400); // Display pause
+                        return;
+                    }
+                } else {
+                    streamerEl.textContent = currentStr.substring(0, charIdx - 1);
+                    charIdx--;
+
+                    if (charIdx <= 0) {
+                        isDeleting = false;
+                        statementIdx = (statementIdx + 1) % statements.length;
+                        setTimeout(typeLoop, 500); // Pause before next sentence
+                        return;
+                    }
+                }
+
+                const speed = isDeleting ? 18 : 34;
+                setTimeout(typeLoop, speed);
+            }
+
+            // Launch typing loop
+            setTimeout(typeLoop, 1400);
+        })();
+
+        // Live Micro-Telemetry Stat Pulse
+        (function initTelemetryStat() {
+            const statEl = document.getElementById('telemetryStat');
+            if (!statEl) return;
+            setInterval(() => {
+                const uptime = (99.96 + Math.random() * 0.03).toFixed(2);
+                const ping = Math.floor(12 + Math.random() * 4);
+                statEl.textContent = `${uptime}% operational telemetry · ${ping}ms`;
+            }, 3500);
+        })();
+
+        // 3D Kinetic Cursor Floating Parallax on Hero Title
+        (function initHeroParallax() {
+            const hero = document.getElementById('hero');
+            const titleBox = document.querySelector('.hero__title');
+            if (!hero || !titleBox || window.matchMedia('(pointer: coarse)').matches) return;
+
+            let targetX = 0, targetY = 0;
+            let currentX = 0, currentY = 0;
+
+            hero.addEventListener('mousemove', (e) => {
+                const rect = hero.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                targetX = x * 16;
+                targetY = y * 12;
+            });
+
+            hero.addEventListener('mouseleave', () => {
+                targetX = 0;
+                targetY = 0;
+            });
+
+            function renderParallax() {
+                currentX += (targetX - currentX) * 0.08;
+                currentY += (targetY - currentY) * 0.08;
+                titleBox.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
+                requestAnimationFrame(renderParallax);
+            }
+            requestAnimationFrame(renderParallax);
         })();
 
         // 8. 3-Stage Work Architecture Component with Live Interactive Simulations
