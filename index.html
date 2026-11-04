@@ -671,32 +671,76 @@
             }
         }
     
-        /* Clean Fluid Fade-in on Scroll (Zero Clutter) */
+        /* ===== GLOBAL KINETIC SCROLL REVEAL & BLUR-TO-SHARPNESS ELEVATION ===== */
         .reveal-on-scroll {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(32px) scale(0.985);
+            filter: blur(8px);
+            transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity, filter;
         }
 
         .reveal-on-scroll.in-view {
             opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        .decrypt-heading {
+            cursor: pointer;
+            display: inline-block;
+            transition: text-shadow 0.2s ease, color 0.2s ease;
+        }
+
+        .decrypt-heading:hover {
+            color: #00ff66 !important;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+
+        /* Staggered Children Animations within Sections */
+        .reveal-on-scroll .ws-container,
+        .reveal-on-scroll .rest-client-box,
+        .reveal-on-scroll .degree-box,
+        .reveal-on-scroll .edu-aside {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, 
+                        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+        }
+
+        .reveal-on-scroll.in-view .ws-container,
+        .reveal-on-scroll.in-view .rest-client-box,
+        .reveal-on-scroll.in-view .degree-box,
+        .reveal-on-scroll.in-view .edu-aside {
+            opacity: 1;
             transform: translateY(0);
         }
 
-        /* Scramble Text Hover Utility */
-        
+        /* Beyond Code Staggered Entrance */
+        .reveal-on-scroll .interest-card {
+            opacity: 0;
+            transform: translateY(28px) scale(0.97);
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-        /* Scroll Reveal Effect */
-        .reveal-on-scroll {
+        .reveal-on-scroll.in-view .interest-card:nth-child(1) { transition-delay: 0.08s; opacity: 1; transform: translateY(0) scale(1); }
+        .reveal-on-scroll.in-view .interest-card:nth-child(2) { transition-delay: 0.18s; opacity: 1; transform: translateY(0) scale(1); }
+        .reveal-on-scroll.in-view .interest-card:nth-child(3) { transition-delay: 0.28s; opacity: 1; transform: translateY(0) scale(1); }
+        .reveal-on-scroll.in-view .interest-card:nth-child(4) { transition-delay: 0.38s; opacity: 1; transform: translateY(0) scale(1); }
+
+        /* Contact Items Staggered Entrance */
+        .reveal-on-scroll .cta-item {
             opacity: 0;
             transform: translateY(22px);
-            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .reveal-on-scroll.in-view {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal-on-scroll.in-view .cta-item:nth-child(1) { transition-delay: 0.12s; opacity: 1; transform: translateY(0); }
+        .reveal-on-scroll.in-view .cta-item:nth-child(2) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
 
         /* ===== SITE HEADER & SCROLL RULER ===== */
         .site-header {
@@ -2464,7 +2508,7 @@
         <!-- ================= [01] SELECTED WORK (3-STAGE ARCHITECTURAL FIELD REPORTS) ================= -->
         <section class="work-section wrap reveal-on-scroll" id="work">
             <header class="section-head">
-                <span class="note note--ink">[01] Selected work</span>
+                <span class="note note--ink decrypt-heading" data-text="[01] Selected work">[01] Selected work</span>
                 <span class="note">Interactive Field Reports · 3 Stages</span>
             </header>
 
@@ -2578,7 +2622,7 @@
         <!-- ================= [03] CAPABILITIES & INTERACTIVE REST PLAYGROUND ================= -->
         <section class="capabilities-section wrap reveal-on-scroll" id="capabilities">
             <header class="section-head">
-                <span class="note note--ink">[02] Capabilities</span>
+                <span class="note note--ink decrypt-heading" data-text="[02] Capabilities">[02] Capabilities</span>
                 <span class="note">Interactive REST Client &amp; Source Inspector</span>
             </header>
 
@@ -2667,7 +2711,7 @@
         <!-- ================= [03] BACKGROUND & CREDENTIALS ================= -->
         <section class="education-section wrap reveal-on-scroll" id="background">
             <header class="section-head">
-                <span class="note note--ink">[03] Education &amp; Credentials</span>
+                <span class="note note--ink decrypt-heading" data-text="[03] Education &amp; Credentials">[03] Education &amp; Credentials</span>
                 <span class="note">Academic foundation &amp; accreditations</span>
             </header>
 
@@ -2722,7 +2766,7 @@
         <!-- ================= [04] BEYOND CODE ================= -->
         <section class="interests-section wrap reveal-on-scroll" id="interests">
             <header class="section-head">
-                <span class="note note--ink">[04] Beyond Code</span>
+                <span class="note note--ink decrypt-heading" data-text="[04] Beyond Code">[04] Beyond Code</span>
                 <span class="note">Human perspective</span>
             </header>
 
@@ -2792,11 +2836,11 @@
         <!-- ================= [05] NEXT / CONTACT ================= -->
         <section class="cta-section wrap reveal-on-scroll" id="contact">
             <header class="section-head">
-                <span class="note note--ink">[05] Contact</span>
+                <span class="note note--ink decrypt-heading" data-text="[05] Contact">[05] Contact</span>
                 <span class="note">Direct communication channels</span>
             </header>
 
-            <h2 class="display cta-title">Tell me what you're building.</h2>
+            <h2 class="display cta-title decrypt-heading" data-text="Tell me what you're building.">Tell me what you're building.</h2>
 
             <div class="cta-channels">
                 <div class="cta-item">
@@ -3125,17 +3169,35 @@
             updateTime();
         })();
 
-        // 5. Scroll Reveal with IntersectionObserver
+        // 5. Global Kinetic Scroll Reveal & Section Character Decrypt Controller
         (function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal-on-scroll');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('in-view');
+                        // Decrypt all section headings within this section
+                        entry.target.querySelectorAll('.decrypt-heading').forEach(heading => {
+                            if (!heading.classList.contains('has-decrypted')) {
+                                heading.classList.add('has-decrypted');
+                                const text = heading.getAttribute('data-text') || heading.textContent.trim();
+                                decryptText(heading, text, 22);
+                            }
+                        });
                     }
                 });
-            }, { threshold: 0.12 });
+            }, { threshold: 0.14 });
+
             reveals.forEach(el => observer.observe(el));
+
+            // Interactive hover re-decrypt on all headings across the entire page
+            document.querySelectorAll('.decrypt-heading').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    playTactileClick(1250, 0.02);
+                    const text = el.getAttribute('data-text') || el.textContent.trim();
+                    decryptText(el, text, 18);
+                });
+            });
         })();
 
         // 6. Whole-Page Background Matrix Digital Rain & Header Toggle Controller
