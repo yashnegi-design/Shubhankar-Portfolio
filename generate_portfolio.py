@@ -103,18 +103,18 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
         ::selection { background: var(--ink); color: var(--bg); }
 
-        /* ===== 1. RETRO CRT TERMINAL LOADER (VIDEO INSPIRED) ===== */
+        /* ===== 1. RETRO CRT TERMINAL LOADER (PITCH BLACK & MATRIX GREEN) ===== */
         .crt-loader {
             position: fixed;
             inset: 0;
-            background: #080c09;
+            background: #000000;
             z-index: 99999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-family: var(--font-mono);
-            color: #39ff14;
+            color: #00ff66;
             overflow: hidden;
             transition: opacity 0.55s cubic-bezier(0.85, 0, 0.15, 1), transform 0.55s cubic-bezier(0.85, 0, 0.15, 1), visibility 0.55s;
         }
@@ -131,13 +131,12 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%);
+            background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.55) 50%);
             background-size: 100% 4px;
             z-index: 10;
-            opacity: 0.85;
+            opacity: 0.8;
         }
 
-        
         /* Matrix Screen Takeover Transition Canvas */
         #crtMatrixTakeoverCanvas {
             position: absolute;
@@ -147,6 +146,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             pointer-events: none;
             z-index: 20;
             opacity: 0;
+            background: #000000;
             transition: opacity 0.25s ease;
         }
 
@@ -159,21 +159,21 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             position: absolute;
             inset: 0;
             pointer-events: none;
-            background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.8) 100%);
-            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.95);
+            background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.9) 100%);
+            box-shadow: inset 0 0 100px #000000;
             z-index: 11;
         }
 
-        /* CRT Terminal Box */
+        /* CRT Terminal Box (Deep Pitch Black) */
         .crt-terminal-box {
             position: relative;
             z-index: 12;
             max-width: 680px;
             width: 90%;
-            background: rgba(10, 16, 12, 0.95);
-            border: 1px solid rgba(57, 255, 20, 0.35);
+            background: #050505;
+            border: 1px solid rgba(0, 255, 102, 0.25);
             border-radius: 8px;
-            box-shadow: 0 0 45px rgba(57, 255, 20, 0.18), inset 0 0 35px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.95);
             overflow: hidden;
         }
 
@@ -182,19 +182,19 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             justify-content: space-between;
             align-items: center;
             padding: 10px 16px;
-            border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 102, 0.2);
             font-size: 0.74rem;
-            color: rgba(57, 255, 20, 0.7);
-            background: rgba(0, 0, 0, 0.5);
+            color: rgba(0, 255, 102, 0.75);
+            background: #000000;
             letter-spacing: 0.05em;
         }
 
         .crt-skip-btn {
             font-family: var(--font-mono);
             font-size: 0.72rem;
-            color: #39ff14;
-            background: rgba(57, 255, 20, 0.1);
-            border: 1px solid rgba(57, 255, 20, 0.35);
+            color: #00ff66;
+            background: rgba(0, 255, 102, 0.08);
+            border: 1px solid rgba(0, 255, 102, 0.3);
             padding: 3px 10px;
             border-radius: 3px;
             cursor: pointer;
@@ -202,8 +202,8 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         }
 
         .crt-skip-btn:hover {
-            background: rgba(57, 255, 20, 0.25);
-            border-color: #39ff14;
+            background: rgba(0, 255, 102, 0.2);
+            border-color: #00ff66;
         }
 
         .crt-screen {
@@ -215,18 +215,18 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             font-size: clamp(1.05rem, 2.2vw, 1.35rem);
             line-height: 1.6;
             letter-spacing: 0.04em;
-            text-shadow: 0 0 8px rgba(57, 255, 20, 0.75), 0 0 16px rgba(57, 255, 20, 0.35);
+            text-shadow: 0 0 4px rgba(0, 255, 102, 0.4);
         }
 
         .crt-line {
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            color: #39ff14;
+            color: #00ff66;
         }
 
         .crt-prompt {
-            color: #39ff14;
+            color: #00ff66;
             margin-right: 8px;
             user-select: none;
             font-weight: 700;
@@ -234,7 +234,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
 
         .crt-cursor {
             display: inline-block;
-            color: #39ff14;
+            color: #00ff66;
             animation: crtBlink 0.6s infinite step-end;
             font-weight: 700;
             margin-left: 2px;
@@ -250,10 +250,10 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             justify-content: space-between;
             align-items: center;
             padding: 8px 16px;
-            border-top: 1px solid rgba(57, 255, 20, 0.15);
+            border-top: 1px solid rgba(0, 255, 102, 0.2);
             font-size: 0.72rem;
-            color: rgba(57, 255, 20, 0.55);
-            background: rgba(0, 0, 0, 0.5);
+            color: rgba(0, 255, 102, 0.65);
+            background: #000000;
         }
 
         /* ===== BLUEPRINT WIREFRAME GRID OVERLAY ===== */
@@ -290,7 +290,7 @@ HTML_CONTENT = r'''<!DOCTYPE html>
 
         body.show-grid .hud-dimensions { display: block; }
 
-        /* ===== MATRIX DIGITAL RAIN OVERLAY ===== */
+        /* ===== MATRIX DIGITAL RAIN OVERLAY (PURE BLACK & MATRIX GREEN) ===== */
         #matrixCanvas {
             position: fixed;
             inset: 0;
@@ -299,11 +299,12 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             pointer-events: none;
             z-index: 9998;
             opacity: 0;
+            background: #000000;
             transition: opacity 0.4s ease;
         }
 
         body.matrix-active #matrixCanvas {
-            opacity: 0.92;
+            opacity: 1;
             pointer-events: auto;
         }
 
@@ -1592,132 +1593,6 @@ HTML_CONTENT = r'''<!DOCTYPE html>
             gap: 1rem;
         }
 
-        /* ===== DOCKED INTERACTIVE DEVELOPER TERMINAL (REPL) ===== */
-        .dev-terminal-dock {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: clamp(320px, 32vw, 460px);
-            background: var(--bg-surface);
-            border: 1px solid var(--line-strong);
-            border-radius: 8px;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
-            z-index: 900;
-            font-family: var(--font-mono);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
-        }
-
-        .dev-terminal-dock.is-minimized {
-            transform: translateY(calc(100% - 38px));
-        }
-
-        .dev-terminal-dock.is-hidden {
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(20px);
-        }
-
-        .terminal-titlebar {
-            height: 38px;
-            background: var(--bg-raised);
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-inline: 12px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .terminal-titlebar-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.74rem;
-            color: var(--muted);
-        }
-
-        .terminal-actions {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .terminal-btn-icon {
-            font-size: 0.72rem;
-            color: var(--muted);
-            padding: 3px 6px;
-            border-radius: 3px;
-        }
-
-        .terminal-btn-icon:hover { color: var(--ink); background: var(--bg); }
-
-        .terminal-body {
-            padding: 12px 14px;
-            height: 220px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            font-size: 0.76rem;
-            line-height: 1.5;
-            background: var(--bg-surface);
-        }
-
-        .terminal-chips {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            padding-bottom: 6px;
-            border-bottom: 1px dashed var(--line);
-        }
-
-        .chip-btn {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            padding: 2px 7px;
-            border: 1px solid var(--line);
-            border-radius: 3px;
-            background: var(--bg-raised);
-            color: var(--accent-text);
-            cursor: pointer;
-        }
-
-        .chip-btn:hover { background: var(--accent-dim); }
-
-        .terminal-output {
-            color: var(--muted);
-            white-space: pre-wrap;
-        }
-
-        .terminal-input-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 8px 12px;
-            border-top: 1px solid var(--line);
-            background: var(--bg-raised);
-        }
-
-        .terminal-prompt {
-            color: var(--accent-text);
-            font-weight: 600;
-            font-size: 0.75rem;
-        }
-
-        .terminal-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--ink);
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-        }
-
         /* Floating "enter matrix" Pill Button */
         .terminal-floating-pill {
             position: fixed;
@@ -2784,35 +2659,6 @@ HTML_CONTENT = r'''<!DOCTYPE html>
         </div>
     </footer>
 
-    <!-- ===== DOCKED INTERACTIVE DEVELOPER TERMINAL (REPL) ===== -->
-    <div class="dev-terminal-dock" id="devTerminal">
-        <div class="terminal-titlebar" id="terminalTitlebar">
-            <div class="terminal-titlebar-left">
-                <i class="fa-solid fa-terminal" style="color:var(--accent-text);"></i>
-                <span>shubhankar@pune-cluster:~</span>
-            </div>
-            <div class="terminal-actions">
-                <button class="terminal-btn-icon" id="terminalMinBtn" title="Minimize/Maximize">_</button>
-                <button class="terminal-btn-icon" id="terminalCloseBtn" title="Hide Terminal">×</button>
-            </div>
-        </div>
-        <div class="terminal-body" id="terminalBody">
-            <div class="terminal-chips">
-                <button class="chip-btn" data-cmd="whoami">whoami</button>
-                <button class="chip-btn" data-cmd="lnt">lnt-status</button>
-                <button class="chip-btn" data-cmd="skills">skills</button>
-                <button class="chip-btn" data-cmd="matrix">matrix</button>
-                <button class="chip-btn" data-cmd="clear">clear</button>
-            </div>
-            <div class="terminal-output" id="terminalOutput">Welcome to Shubhankar's REPL shell.
-Type 'help' or click the chips above to run commands.</div>
-        </div>
-        <div class="terminal-input-row">
-            <span class="terminal-prompt">&gt;</span>
-            <input type="text" class="terminal-input" id="terminalInput" placeholder="type a command (e.g. whoami, help)..." autocomplete="off" spellcheck="false">
-        </div>
-    </div>
-
     <!-- Floating "enter matrix" Pill Button -->
     <button class="terminal-floating-pill" id="openTerminalPill" title="Toggle Fullscreen Matrix Mode">
         <span>enter matrix</span>
@@ -2834,7 +2680,6 @@ Type 'help' or click the chips above to run commands.</div>
                 <div class="cmd-option" data-href="#background"><span>04 // Education &amp; Credentials</span><span class="note">04</span></div>
                 <div class="cmd-option" data-href="#interests"><span>05 // Beyond Code</span><span class="note">05</span></div>
                 <div class="cmd-option" data-href="#contact"><span>06 // Contact &amp; Communication</span><span class="note">06</span></div>
-                <div class="cmd-option" data-action="toggle-terminal"><span>Open Developer REPL Terminal</span><span class="note">&gt;_</span></div>
                 <div class="cmd-option" data-action="toggle-matrix"><span>Toggle Matrix Digital Rain</span><span class="note">M</span></div>
                 <div class="cmd-option" data-action="download-resume"><span>Download Resume (PDF)</span><span class="note">DL</span></div>
                 
@@ -2954,7 +2799,7 @@ Type 'help' or click the chips above to run commands.</div>
                 if (e.key === 'Escape' && !isFinished) directSkip();
             });
 
-            // Cinematic Matrix Screen Takeover Transition
+            // Cinematic Matrix Screen Takeover Transition (Solid Pitch Black Background + Matrix Green Falling Rain)
             function runMatrixScreenTakeover() {
                 if (isFinished) return;
                 if (!takeoverCanvas) { directSkip(); return; }
@@ -2964,26 +2809,33 @@ Type 'help' or click the chips above to run commands.</div>
                 takeoverCanvas.height = window.innerHeight;
                 takeoverCanvas.classList.add('is-active');
 
+                // Initial solid black fill so the background stays pitch black
+                tCtx.fillStyle = '#000000';
+                tCtx.fillRect(0, 0, takeoverCanvas.width, takeoverCanvas.height);
+
                 // Fade out CRT terminal frame as matrix rain sweeps
                 if (terminalBox) {
-                    terminalBox.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    terminalBox.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
                     terminalBox.style.opacity = '0';
                     terminalBox.style.transform = 'scale(0.96)';
                 }
 
                 const glyphs = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ";
-                const fontSize = 15;
+                const fontSize = 16;
                 const columns = Math.floor(takeoverCanvas.width / fontSize) + 1;
                 // Start all columns staggered slightly from above the top
-                const drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -15));
+                const drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * -12));
 
                 let frameCount = 0;
-                const maxFrames = 38; // Sweeps down screen in ~750ms
+                const maxFrames = 36; // Sweeps down screen crisply
 
                 const takeoverInterval = setInterval(() => {
-                    tCtx.fillStyle = 'rgba(7, 8, 10, 0.14)';
+                    // Solid black fade to prevent any green washout / greening of the screen
+                    tCtx.fillStyle = 'rgba(0, 0, 0, 0.30)';
                     tCtx.fillRect(0, 0, takeoverCanvas.width, takeoverCanvas.height);
                     tCtx.font = `bold ${fontSize}px "Geist Mono", monospace`;
+                    tCtx.shadowBlur = 0;
+                    tCtx.shadowColor = 'transparent';
 
                     for (let i = 0; i < drops.length; i++) {
                         const char = glyphs[Math.floor(Math.random() * glyphs.length)];
@@ -2991,17 +2843,14 @@ Type 'help' or click the chips above to run commands.</div>
                         const y = drops[i] * fontSize;
 
                         if (drops[i] >= 0) {
-                            // Bright glowing white-green leading tip
+                            // Crisp white leading tip
                             tCtx.fillStyle = '#ffffff';
-                            tCtx.shadowColor = '#00ff66';
-                            tCtx.shadowBlur = 10;
                             tCtx.fillText(char, x, y);
 
-                            // Green phosphor body behind tip
+                            // Pure Matrix Green body behind tip
                             if (drops[i] > 1) {
                                 const prevChar = glyphs[Math.floor(Math.random() * glyphs.length)];
                                 tCtx.fillStyle = '#00ff66';
-                                tCtx.shadowBlur = 4;
                                 tCtx.fillText(prevChar, x, (drops[i] - 1) * fontSize);
                             }
                         }
@@ -3012,8 +2861,8 @@ Type 'help' or click the chips above to run commands.</div>
 
                     frameCount++;
 
-                    // At frame 18 (~350ms), landing page starts emerging underneath
-                    if (frameCount === 18) {
+                    // At frame 16, landing page starts emerging underneath
+                    if (frameCount === 16) {
                         triggerHeroFadeIn();
                     }
 
@@ -3021,13 +2870,13 @@ Type 'help' or click the chips above to run commands.</div>
                     if (frameCount >= maxFrames) {
                         clearInterval(takeoverInterval);
                         isFinished = true;
-                        loader.style.transition = 'opacity 0.45s ease';
+                        loader.style.transition = 'opacity 0.4s ease';
                         loader.style.opacity = '0';
                         setTimeout(() => {
                             loader.classList.add('is-done');
-                        }, 450);
+                        }, 400);
                     }
-                }, 20);
+                }, 22);
             }
 
             // Typing sequence for the 3 requested lines
@@ -3127,7 +2976,7 @@ Type 'help' or click the chips above to run commands.</div>
             reveals.forEach(el => observer.observe(el));
         })();
 
-        // 6. Authentic Matrix Digital Rain Canvas & Hero IDE Code Window
+        // 6. Authentic Matrix Digital Rain Canvas (Pitch Black Canvas + Matrix Green Glyphs)
         (function initMatrixHeroRain() {
             const canvas = document.getElementById('matrixHeroCanvas');
             if (!canvas) return;
@@ -3137,6 +2986,8 @@ Type 'help' or click the chips above to run commands.</div>
             function resize() {
                 width = canvas.width = canvas.parentElement.offsetWidth;
                 height = canvas.height = canvas.parentElement.offsetHeight;
+                ctx.fillStyle = '#07080a';
+                ctx.fillRect(0, 0, width, height);
             }
             window.addEventListener('resize', resize);
             resize();
@@ -3155,11 +3006,13 @@ Type 'help' or click the chips above to run commands.</div>
             });
 
             function renderMatrix() {
-                // Subtle phosphor persistence tail
-                ctx.fillStyle = 'rgba(7, 8, 10, 0.08)';
+                // Clear with solid/high-opacity dark background to prevent green buildup or washout
+                ctx.fillStyle = 'rgba(7, 8, 10, 0.25)';
                 ctx.fillRect(0, 0, width, height);
 
                 ctx.font = `${fontSize}px "Geist Mono", monospace`;
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
 
                 for (let i = 0; i < drops.length; i++) {
                     const char = glyphs[Math.floor(Math.random() * glyphs.length)];
@@ -3168,15 +3021,11 @@ Type 'help' or click the chips above to run commands.</div>
 
                     const isNearMouse = Math.abs(i - mouseCol) <= 2;
 
-                    // Leading bright white-green tip
-                    if (Math.random() > 0.88 || isNearMouse) {
+                    // Leading bright white tip, trailing pure Matrix Green
+                    if (Math.random() > 0.90 || isNearMouse) {
                         ctx.fillStyle = isNearMouse ? '#ffffff' : '#e6ffe6';
-                        ctx.shadowColor = '#00ff66';
-                        ctx.shadowBlur = 8;
                     } else {
                         ctx.fillStyle = '#00ff66';
-                        ctx.shadowColor = 'transparent';
-                        ctx.shadowBlur = 0;
                     }
 
                     ctx.fillText(char, x, y);
@@ -3193,7 +3042,7 @@ Type 'help' or click the chips above to run commands.</div>
 
             setInterval(renderMatrix, 40);
 
-            })();
+        })();
 
         // 7. Interactive Machine Token Typing Streamer
         (function initTokenStreamer() {
@@ -3723,118 +3572,18 @@ curl -f -s -o /dev/null http://localhost:8080/enterprise-portal/health
             });
         })();
 
-        // 11. Docked Developer Interactive REPL Terminal
-        (function initDevTerminal() {
-            const terminal = document.getElementById('devTerminal');
-            const titlebar = document.getElementById('terminalTitlebar');
-            const minBtn = document.getElementById('terminalMinBtn');
-            const closeBtn = document.getElementById('terminalCloseBtn');
-            const input = document.getElementById('terminalInput');
-            const output = document.getElementById('terminalOutput');
+        // 11. Floating "enter matrix" Pill Interaction
+        (function initMatrixPill() {
             const openPill = document.getElementById('openTerminalPill');
-            const chipBtns = document.querySelectorAll('.chip-btn');
-
-            let isMin = false;
-
-            function toggleMin() {
-                isMin = !isMin;
-                terminal.classList.toggle('is-minimized', isMin);
-                minBtn.textContent = isMin ? '□' : '_';
-            }
-
-            titlebar.addEventListener('click', (e) => {
-                if (e.target === closeBtn) return;
-                toggleMin();
-            });
-
-            minBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleMin();
-            });
-
-            closeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                terminal.classList.add('is-hidden');
-                openPill.style.display = 'flex';
-            });
-
-            openPill.addEventListener('click', () => {
-                playTactileClick(1200, 0.02);
-                toggleMatrixRain();
-            });
-
-            function executeCommand(rawCmd) {
-                const cmd = rawCmd.trim().toLowerCase();
-                if (!cmd) return;
-                playTactileClick(1000, 0.02);
-
-                output.innerHTML += `\n<span style="color:var(--accent-text);">&gt; ${rawCmd}</span>\n`;
-
-                if (cmd === 'help') {
-                    output.innerHTML += `Available commands:
-• whoami       — Developer profile & current role
-• lnt / status — L&T Pune cluster metrics & architecture
-• skills       — Complete tech stack matrix
-• projects     — Selected work overview
-• matrix       — Toggle Matrix digital rain
-• theme        — Toggle light / dark theme
-• clear        — Clear terminal output`;
-                } else if (cmd === 'whoami') {
-                    output.innerHTML += `SHUBHANKAR NEGI
-Role: Full Stack Developer @ Larsen & Toubro (L&T)
-Locations: Pune, Maharashtra & Almora, Uttarakhand
-Education: B.Tech CSE (Graphic Era Hill University, 2022–2025)
-Email: samnegi1844@gmail.com · Tel: +91 86500 51616`;
-                } else if (cmd === 'lnt' || cmd === 'status') {
-                    output.innerHTML += `LARSEN & TOUBRO (L&T) CLUSTER TELEMETRY
-Status: Active Production Node (March 2026 — Present)
-Location: Pune, Maharashtra [18.52° N]
-Stack: Java, Spring Boot, MySQL, REST APIs, Microservices
-Uptime: 99.98% · Latency: 14ms · Memory: Nominal`;
-                } else if (cmd === 'skills') {
-                    output.innerHTML += `CORE TECHNICAL STACK:
-• Languages: Java, Python, C++, C, SQL, JavaScript
-• Backend: Spring Boot, Servlets, JSP, Tomcat, REST APIs
-• Database: MySQL, Relational Design, Query Tuning, JDBC
-• AI & Vision: OpenCV 4.x, NumPy, SpeechRecognition, pyttsx3
-• DevOps: Linux CLI, Bash, Git, GitHub`;
-                } else if (cmd === 'projects') {
-                    output.innerHTML += `1. L&T Enterprise Platform (Full-Stack Architecture)
-2. Real-Time Image to Sketch Converter (OpenCV, 90% Acc)
-3. Desktop Assistant (Python, Voice & OS Automation)
-4. Student Feedback System (Java, JSP, Tomcat, MySQL)`;
-                } else if (cmd === 'matrix') {
+            if (openPill) {
+                openPill.addEventListener('click', () => {
+                    playTactileClick(1200, 0.02);
                     toggleMatrixRain();
-                    output.innerHTML += `Matrix digital rain overlay activated. Press ESC or button to exit.`;
-                } else if (cmd === 'theme') {
-                    const current = document.documentElement.dataset.theme;
-                    setTheme(current === 'dark' ? 'light' : 'dark');
-                    output.innerHTML += `Theme switched to: ${document.documentElement.dataset.theme.toUpperCase()}`;
-                } else if (cmd === 'clear') {
-                    output.innerHTML = `Terminal cleared. Type 'help' for commands.`;
-                } else {
-                    output.innerHTML += `command not found: '${rawCmd}'. Type 'help' for list.`;
-                }
-
-                output.scrollTop = output.scrollHeight;
-                input.value = '';
-            }
-
-            input.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    executeCommand(input.value);
-                }
-            });
-
-            chipBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const cmd = btn.getAttribute('data-cmd');
-                    executeCommand(cmd);
                 });
-            });
+            }
         })();
 
-        // 12. Matrix Digital Rain Overlay
+        // 12. Matrix Digital Rain Overlay (Solid Pitch Black Canvas + Matrix Green Characters)
         const matrixCanvas = document.getElementById('matrixCanvas');
         const mCtx = matrixCanvas.getContext('2d');
         const exitMatrixBtn = document.getElementById('exitMatrixBtn');
@@ -3845,25 +3594,30 @@ Uptime: 99.98% · Latency: 14ms · Memory: Nominal`;
             if (document.body.classList.contains('matrix-active')) {
                 matrixCanvas.width = window.innerWidth;
                 matrixCanvas.height = window.innerHeight;
+                mCtx.fillStyle = '#000000';
+                mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
                 const cols = Math.floor(matrixCanvas.width / 16);
                 const drops = Array(cols).fill(1);
-                const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZアイウエオカキクケコサシスセソタチツテト';
+                const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ';
 
                 matrixInterval = setInterval(() => {
-                    mCtx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+                    mCtx.fillStyle = 'rgba(0, 0, 0, 0.22)';
                     mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
                     mCtx.fillStyle = '#00ff66';
-                    mCtx.font = '14px monospace';
+                    mCtx.font = 'bold 14px monospace';
+                    mCtx.shadowBlur = 0;
+                    mCtx.shadowColor = 'transparent';
 
                     for (let i = 0; i < drops.length; i++) {
                         const char = chars[Math.floor(Math.random() * chars.length)];
                         mCtx.fillText(char, i * 16, drops[i] * 16);
+
                         if (drops[i] * 16 > matrixCanvas.height && Math.random() > 0.975) {
                             drops[i] = 0;
                         }
                         drops[i]++;
                     }
-                }, 35);
+                }, 33);
             } else {
                 clearInterval(matrixInterval);
                 mCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
@@ -3964,12 +3718,7 @@ Uptime: 99.98% · Latency: 14ms · Memory: Nominal`;
                 toggleGrid();
             } else if (action === 'toggle-matrix') {
                 toggleMatrixRain();
-            } else if (action === 'toggle-terminal') {
-                const term = document.getElementById('devTerminal');
-                term.classList.remove('is-hidden');
-                document.getElementById('openTerminalPill').style.display = 'none';
-                term.classList.remove('is-minimized');
-                document.getElementById('terminalInput').focus();
+
             }
         });
     
