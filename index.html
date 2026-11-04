@@ -799,18 +799,45 @@
             overflow: hidden;
         }
 
-        #matrixHeroCanvas {
-            position: absolute;
+        /* Whole-Page Background Matrix Digital Rain */
+        #matrixPageBgCanvas {
+            position: fixed;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.30;
-            transition: opacity 0.5s ease;
+            opacity: 0.18;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
 
-        .hero > *:not(#matrixHeroCanvas) {
+        body.matrix-bg-disabled #matrixPageBgCanvas {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Matrix BG Header Toggle Button Indicator */
+        .matrix-btn-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #00ff66;
+            box-shadow: 0 0 6px #00ff66;
+            display: inline-block;
+            margin-right: 5px;
+            transition: all 0.2s ease;
+        }
+
+        body.matrix-bg-disabled #matrixBgToggleBtn .matrix-btn-dot {
+            background: var(--muted);
+            box-shadow: none;
+        }
+
+        body.matrix-bg-disabled #matrixBgToggleBtn {
+            opacity: 0.6;
+        }
+
+        .hero > * {
             position: relative;
             z-index: 2;
         }
@@ -952,95 +979,7 @@
         .hero__ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 
         
-        /* ===== MANIFESTO MATRIX GLITCH STYLES ===== */
-        .manifesto-line-wrap {
-            position: relative;
-            display: block;
-            border-bottom: 1px dashed var(--line);
-            padding-bottom: 0.6rem;
-            margin-bottom: 1.2rem;
-            overflow: hidden;
-        }
 
-        .manifesto-line {
-            color: #ffffff;
-            font-weight: 500;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-        }
-
-        .matrix-glitch-word {
-            color: #00ff66;
-            font-weight: 600;
-            display: inline-block;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
-        }
-
-        .matrix-glitch-word:hover {
-            color: #ffffff;
-            text-shadow: 2px 0 #00ff66, -2px 0 rgba(0, 255, 102, 0.8), 0 0 14px #00ff66;
-            animation: matrixGlitchJitter 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-        }
-
-        @keyframes matrixGlitchJitter {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 1px); }
-            40% { transform: translate(2px, -1px); }
-            60% { transform: translate(-1px, -1px); }
-            80% { transform: translate(1px, 1px); }
-            100% { transform: translate(0); }
-        }
-    
-        /* ===== [01] MANIFESTO ===== */
-        .manifesto {
-            padding-block: var(--section-gap);
-        }
-
-        .wf-row {
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            border-bottom: 1px dashed var(--line);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            cursor: crosshair;
-        }
-
-        .wf-line {
-            width: fit-content;
-            max-width: 100%;
-            position: relative;
-        }
-
-        .wf-solid-reveal {
-            position: absolute;
-            inset: 0;
-            color: var(--ink);
-            clip-path: inset(0 100% 0 0);
-            pointer-events: none;
-            transition: clip-path 0.15s ease-out;
-        }
-
-        .wf-row:hover .wf-solid-reveal {
-            clip-path: inset(0 0% 0 0);
-        }
-
-        .wf-dim {
-            font-family: var(--font-mono);
-            font-size: var(--step--1);
-            color: var(--muted);
-        }
-
-        .manifesto__body {
-            margin-top: clamp(40px, 6vw, 80px);
-        }
-
-        .manifesto__body p { grid-column: 1 / span 9; }
 
         /* ===== [02] WORK STAGE ARCHITECTURAL SLIDER ===== */
         .work-section {
@@ -1825,78 +1764,7 @@
             transform: translateY(-2px);
         }
 
-        /* ===== COMMAND PALETTE OVERLAY (⌘K) ===== */
-        .cmd-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.65);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: none;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 15vh;
-        }
 
-        .cmd-backdrop.is-open { display: flex; }
-
-        .cmd-panel {
-            width: min(620px, 92vw);
-            background: var(--bg-raised);
-            border: 1px solid var(--line-strong);
-            border-radius: 8px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
-            font-family: var(--font-mono);
-            animation: cmdPop 0.18s var(--ease-out);
-        }
-
-        @keyframes cmdPop {
-            from { opacity: 0; transform: scale(0.97) translateY(-8px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .cmd-input-bar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--line);
-            background: var(--bg);
-        }
-
-        .cmd-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            font-family: var(--font-mono);
-            font-size: var(--step-0);
-            color: var(--ink);
-        }
-
-        .cmd-list {
-            max-height: 340px;
-            overflow-y: auto;
-            padding: 8px;
-        }
-
-        .cmd-option {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            border-radius: 4px;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: var(--step--1);
-            transition: background 0.15s, color 0.15s;
-        }
-
-        .cmd-option:hover, .cmd-option.is-selected {
-            background: var(--bg-surface);
-            color: var(--ink);
-        }
 
         /* Responsive Breakpoints & Mobile/Tablet Architecture */
         
@@ -2118,18 +1986,7 @@
                 gap: 12px;
             }
 
-            /* Manifesto dimension annotation hidden on tablets for clean look */
-            .wf-dim {
-                display: none;
-            }
 
-            .manifesto-line {
-                font-size: clamp(2rem, 7.5vw, 3.8rem);
-            }
-
-            .manifesto__body p {
-                grid-column: 1 / -1;
-            }
         }
 
         /* TIER 3: Mobile Phones (max-width: 640px) */
@@ -2381,6 +2238,9 @@
     <div class="blueprint-grid-overlay" aria-hidden="true"></div>
     <div class="hud-dimensions" id="hudDim">VIEWPORT: 1440 × 900 · GRID 32px · NODE: ALMORA/PUNE</div>
 
+    <!-- Global Whole-Page Background Matrix Digital Rain Canvas -->
+    <canvas id="matrixPageBgCanvas" aria-hidden="true"></canvas>
+
     <!-- ===== INTERACTIVE MATRIX CONSTRUCT OVERLAY ===== -->
     <div class="matrix-construct" id="matrixConstruct">
         <canvas id="matrixCanvas"></canvas>
@@ -2420,9 +2280,9 @@
         <nav class="nav" aria-label="Main Navigation">
             <ul>
                 <li><a href="#work" class="nav__link"><span class="note">01</span><span>Work</span></a></li>
-                <li><a href="#philosophy" class="nav__link"><span class="note">02</span><span>Philosophy</span></a></li>
-                <li><a href="#capabilities" class="nav__link"><span class="note">03</span><span>API &amp; Stack</span></a></li>
-                <li><a href="#background" class="nav__link"><span class="note">04</span><span>Background</span></a></li>
+                <li><a href="#capabilities" class="nav__link"><span class="note">02</span><span>API &amp; Stack</span></a></li>
+                <li><a href="#background" class="nav__link"><span class="note">03</span><span>Credentials</span></a></li>
+                <li><a href="#interests" class="nav__link"><span class="note">04</span><span>Beyond Code</span></a></li>
                 <li><a href="#contact" class="nav__link"><span class="note">05</span><span>Contact</span></a></li>
             </ul>
         </nav>
@@ -2433,6 +2293,12 @@
                 <span class="telemetry-dot"></span>
                 <span class="note--accent" id="headerClock">12:00:00 IST</span>
             </div>
+
+            <!-- Whole-Page Background Matrix Toggle -->
+            <button class="header-btn is-active" id="matrixBgToggleBtn" title="Toggle Page Background Matrix Rain">
+                <span class="matrix-btn-dot"></span>
+                <span>MATRIX BG</span>
+            </button>
 
             <!-- Blueprint Grid Toggle -->
             <button class="header-btn" id="gridToggleBtn" title="Toggle Blueprint Grid Mode [G]">
@@ -2463,11 +2329,10 @@
             </div>
             <nav class="mobile-nav-links">
                 <a href="#work" class="mob-link"><span>01 // Selected Work</span> <span class="arrow">&rarr;</span></a>
-                <a href="#philosophy" class="mob-link"><span>02 // Philosophy</span> <span class="arrow">&rarr;</span></a>
-                <a href="#capabilities" class="mob-link"><span>03 // API &amp; Stack</span> <span class="arrow">&rarr;</span></a>
-                <a href="#background" class="mob-link"><span>04 // Credentials</span> <span class="arrow">&rarr;</span></a>
-                <a href="#interests" class="mob-link"><span>05 // Beyond Code</span> <span class="arrow">&rarr;</span></a>
-                <a href="#contact" class="mob-link"><span>06 // Contact</span> <span class="arrow">&rarr;</span></a>
+                <a href="#capabilities" class="mob-link"><span>02 // API &amp; Stack</span> <span class="arrow">&rarr;</span></a>
+                <a href="#background" class="mob-link"><span>03 // Credentials</span> <span class="arrow">&rarr;</span></a>
+                <a href="#interests" class="mob-link"><span>04 // Beyond Code</span> <span class="arrow">&rarr;</span></a>
+                <a href="#contact" class="mob-link"><span>05 // Contact</span> <span class="arrow">&rarr;</span></a>
             </nav>
         </div>
     </div>
@@ -2477,9 +2342,6 @@
 
         <!-- ================= HERO ================= -->
         <section class="hero wrap" id="hero">
-            <!-- Dynamic Matrix Digital Rain Canvas -->
-            <canvas id="matrixHeroCanvas"></canvas>
-
             <div class="hero__top note fade-child">
                 <span>Base camp · Almora &amp; Pune · 29.59° N, 79.65° E</span>
                 <span>Engineering &amp; Systems Architecture</span>
@@ -2511,42 +2373,10 @@
             </div>
         </section>
 
-        <!-- ================= [01] PHILOSOPHY / MANIFESTO ================= -->
-        <section class="manifesto wrap reveal-on-scroll" id="philosophy">
-            <header class="section-head">
-                <span class="note note--ink">[01] Philosophy</span>
-                <span class="note">Core Engineering Principles</span>
-            </header>
-
-            <div class="manifesto-line-wrap">
-                <p class="manifesto-line h1">
-                    <span>Keep the </span><span class="matrix-glitch-word" data-word="logic.">logic.</span>
-                </p>
-            </div>
-
-            <div class="manifesto-line-wrap">
-                <p class="manifesto-line h1">
-                    <span class="matrix-glitch-word" data-word="Solve">Solve</span><span> what stands</span>
-                </p>
-            </div>
-
-            <div class="manifesto-line-wrap">
-                <p class="manifesto-line h1">
-                    <span>in its </span><span class="matrix-glitch-word" data-word="way.">way.</span>
-                </p>
-            </div>
-
-            <div class="manifesto__body grid-12">
-                <p class="lead">
-                    Complex enterprise demands require clean engineering under the hood. Whether building multi-tier services at <strong>Larsen &amp; Toubro</strong>, optimizing MySQL relational schemas, or calculating OpenCV 21×21 Gaussian dodge matrices, I build systems that remain resilient, maintainable, and fast in production.
-                </p>
-            </div>
-        </section>
-
-        <!-- ================= [02] SELECTED WORK (3-STAGE ARCHITECTURAL FIELD REPORTS) ================= -->
+        <!-- ================= [01] SELECTED WORK (3-STAGE ARCHITECTURAL FIELD REPORTS) ================= -->
         <section class="work-section wrap reveal-on-scroll" id="work">
             <header class="section-head">
-                <span class="note note--ink">[02] Selected work</span>
+                <span class="note note--ink">[01] Selected work</span>
                 <span class="note">Interactive Field Reports · 3 Stages</span>
             </header>
 
@@ -2660,7 +2490,7 @@
         <!-- ================= [03] CAPABILITIES & INTERACTIVE REST PLAYGROUND ================= -->
         <section class="capabilities-section wrap reveal-on-scroll" id="capabilities">
             <header class="section-head">
-                <span class="note note--ink">[03] Capabilities</span>
+                <span class="note note--ink">[02] Capabilities</span>
                 <span class="note">Interactive REST Client &amp; Source Inspector</span>
             </header>
 
@@ -2746,10 +2576,10 @@
             </div>
         </section>
 
-        <!-- ================= [04] BACKGROUND & CREDENTIALS ================= -->
+        <!-- ================= [03] BACKGROUND & CREDENTIALS ================= -->
         <section class="education-section wrap reveal-on-scroll" id="background">
             <header class="section-head">
-                <span class="note note--ink">[04] Education &amp; Credentials</span>
+                <span class="note note--ink">[03] Education &amp; Credentials</span>
                 <span class="note">Academic foundation &amp; accreditations</span>
             </header>
 
@@ -2801,10 +2631,10 @@
             </div>
         </section>
 
-        <!-- ================= [05] BEYOND CODE ================= -->
+        <!-- ================= [04] BEYOND CODE ================= -->
         <section class="interests-section wrap reveal-on-scroll" id="interests">
             <header class="section-head">
-                <span class="note note--ink">[05] Beyond Code</span>
+                <span class="note note--ink">[04] Beyond Code</span>
                 <span class="note">Human perspective</span>
             </header>
 
@@ -2871,10 +2701,10 @@
             </div>
         </section>
 
-        <!-- ================= [06] NEXT / CONTACT ================= -->
+        <!-- ================= [05] NEXT / CONTACT ================= -->
         <section class="cta-section wrap reveal-on-scroll" id="contact">
             <header class="section-head">
-                <span class="note note--ink">[06] Next</span>
+                <span class="note note--ink">[05] Contact</span>
                 <span class="note">Direct communication channels</span>
             </header>
 
@@ -2915,29 +2745,7 @@
         <span>enter matrix</span>
     </button>
 
-    <!-- ===== COMMAND PALETTE OVERLAY (⌘K) ===== -->
-    <div class="cmd-backdrop" id="cmdModal" aria-hidden="true">
-        <div class="cmd-panel" onclick="event.stopPropagation()">
-            <div class="cmd-input-bar">
-                <i class="fa-solid fa-magnifying-glass note"></i>
-                <input type="text" class="cmd-input" id="cmdInput" placeholder="Jump to section or action (e.g. work, resume, matrix, lnt)..." autocomplete="off">
-                <span class="note">ESC</span>
-            </div>
-            <div class="cmd-list" id="cmdList">
-                <div class="cmd-option" data-href="#hero"><span>00 // Overview (Home)</span><span class="note">00</span></div>
-                <div class="cmd-option" data-href="#work"><span>01 // Selected Work &amp; L&amp;T Architecture</span><span class="note">01</span></div>
-                <div class="cmd-option" data-href="#philosophy"><span>02 // Philosophy (Manifesto)</span><span class="note">02</span></div>
-                <div class="cmd-option" data-href="#capabilities"><span>03 // Interactive REST API &amp; Stack</span><span class="note">03</span></div>
-                <div class="cmd-option" data-href="#background"><span>04 // Education &amp; Credentials</span><span class="note">04</span></div>
-                <div class="cmd-option" data-href="#interests"><span>05 // Beyond Code</span><span class="note">05</span></div>
-                <div class="cmd-option" data-href="#contact"><span>06 // Contact &amp; Communication</span><span class="note">06</span></div>
-                <div class="cmd-option" data-action="toggle-matrix"><span>Toggle Matrix Digital Rain</span><span class="note">M</span></div>
-                <div class="cmd-option" data-action="download-resume"><span>Download Resume (PDF)</span><span class="note">DL</span></div>
-                
-                <div class="cmd-option" data-action="toggle-grid"><span>Toggle Blueprint Grid</span><span class="note">G</span></div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- ===== SCRIPT ENGINE ===== -->
     <script>
@@ -2974,44 +2782,7 @@
         }
 
         
-        // Interactive Matrix Glitch Effect on Main Words (Manifesto)
-        (function initMatrixWordGlitch() {
-            const glitchWords = document.querySelectorAll('.matrix-glitch-word');
-            const matrixChars = "010101#@%&*<>/_+=~";
 
-            glitchWords.forEach(wordEl => {
-                const originalText = wordEl.getAttribute('data-word') || wordEl.textContent;
-                let glitchTimer = null;
-
-                wordEl.addEventListener('mouseenter', () => {
-                    playTactileClick(1400, 0.02);
-                    let iteration = 0;
-                    if (glitchTimer) clearInterval(glitchTimer);
-
-                    glitchTimer = setInterval(() => {
-                        wordEl.textContent = originalText
-                            .split('')
-                            .map((char, idx) => {
-                                if (char === ' ' || char === '.') return char;
-                                if (idx < iteration) return originalText[idx];
-                                return matrixChars[Math.floor(Math.random() * matrixChars.length)];
-                            })
-                            .join('');
-
-                        iteration += 1 / 2;
-                        if (iteration >= originalText.length) {
-                            clearInterval(glitchTimer);
-                            wordEl.textContent = originalText;
-                        }
-                    }, 35);
-                });
-
-                wordEl.addEventListener('mouseleave', () => {
-                    if (glitchTimer) clearInterval(glitchTimer);
-                    wordEl.textContent = originalText;
-                });
-            });
-        })();
     
         // 1. Clean Fade-In Reveal Controller (Clean & Spacious)
         function triggerHeroFadeIn() {
@@ -3229,38 +3000,78 @@
             reveals.forEach(el => observer.observe(el));
         })();
 
-        // 6. Authentic Matrix Digital Rain Canvas (Pitch Black Canvas + Matrix Green Glyphs)
-        (function initMatrixHeroRain() {
-            const canvas = document.getElementById('matrixHeroCanvas');
+        // 6. Whole-Page Background Matrix Digital Rain & Header Toggle Controller
+        (function initPageMatrixRain() {
+            const canvas = document.getElementById('matrixPageBgCanvas');
+            const toggleBtn = document.getElementById('matrixBgToggleBtn');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let width, height;
 
+            // Persistent user state (defaults to enabled)
+            let isMatrixBgActive = localStorage.getItem('matrix_bg_enabled') !== 'false';
+
+            function updateToggleBtn() {
+                if (isMatrixBgActive) {
+                    document.body.classList.remove('matrix-bg-disabled');
+                    if (toggleBtn) {
+                        toggleBtn.classList.add('is-active');
+                        const label = toggleBtn.querySelector('span:last-child');
+                        if (label) label.textContent = 'MATRIX BG';
+                    }
+                } else {
+                    document.body.classList.add('matrix-bg-disabled');
+                    if (toggleBtn) {
+                        toggleBtn.classList.remove('is-active');
+                        const label = toggleBtn.querySelector('span:last-child');
+                        if (label) label.textContent = 'MATRIX OFF';
+                    }
+                    if (ctx) ctx.clearRect(0, 0, width, height);
+                }
+            }
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    playTactileClick(1100, 0.02);
+                    isMatrixBgActive = !isMatrixBgActive;
+                    localStorage.setItem('matrix_bg_enabled', isMatrixBgActive ? 'true' : 'false');
+                    updateToggleBtn();
+                });
+            }
+
+            // Sync initial state
+            updateToggleBtn();
+
             function resize() {
-                width = canvas.width = canvas.parentElement.offsetWidth;
-                height = canvas.height = canvas.parentElement.offsetHeight;
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
                 ctx.fillStyle = '#07080a';
                 ctx.fillRect(0, 0, width, height);
             }
             window.addEventListener('resize', resize);
             resize();
 
-            // Authentic Matrix Glyph Set (Katakana, Binary, Hex, Code Symbols)
+            // Authentic Matrix Glyph Set
             const glyphs = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ010101<>/{};:+=*~#$@!&%ｦｱｳｴｵｶｷｹｺｻｼｽｾｿﾀﾂﾃﾅﾆﾇﾈﾊﾋﾎﾏﾐﾑﾒﾓﾔﾕﾗﾘﾜ";
             const fontSize = 14;
-            const columns = Math.floor(width / fontSize) + 1;
-            const drops = Array(columns).fill(1);
+            let columns = Math.floor(width / fontSize) + 1;
+            let drops = Array(columns).fill(1).map(() => Math.floor(Math.random() * -50));
             let mouseCol = -1;
 
             window.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const mx = e.clientX - rect.left;
-                mouseCol = Math.floor(mx / fontSize);
+                mouseCol = Math.floor(e.clientX / fontSize);
+            });
+
+            window.addEventListener('resize', () => {
+                columns = Math.floor(width / fontSize) + 1;
+                drops = Array(columns).fill(1);
             });
 
             function renderMatrix() {
-                // Clear with solid/high-opacity dark background to prevent green buildup or washout
-                ctx.fillStyle = 'rgba(7, 8, 10, 0.25)';
+                if (!isMatrixBgActive) return;
+
+                // Solid dark clearing frame for crisp contrast without green washout
+                ctx.fillStyle = 'rgba(7, 8, 10, 0.22)';
                 ctx.fillRect(0, 0, width, height);
 
                 ctx.font = `${fontSize}px "Geist Mono", monospace`;
@@ -3274,27 +3085,27 @@
 
                     const isNearMouse = Math.abs(i - mouseCol) <= 2;
 
-                    // Leading bright white tip, trailing pure Matrix Green
-                    if (Math.random() > 0.90 || isNearMouse) {
+                    // Leading bright white tip, trailing Matrix green
+                    if (Math.random() > 0.92 || isNearMouse) {
                         ctx.fillStyle = isNearMouse ? '#ffffff' : '#e6ffe6';
                     } else {
                         ctx.fillStyle = '#00ff66';
                     }
 
-                    ctx.fillText(char, x, y);
+                    if (y >= 0) {
+                        ctx.fillText(char, x, y);
+                    }
 
-                    // Reset drop when exceeding height
+                    // Reset drop when exceeding screen height
                     if (y > height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
 
-                    // Accelerate slightly near mouse
                     drops[i] += isNearMouse ? 1.5 : 1;
                 }
             }
 
-            setInterval(renderMatrix, 40);
-
+            setInterval(renderMatrix, 35);
         })();
 
         // 7. Machine Focus Streamer
@@ -4002,70 +3813,10 @@ curl -f -s -o /dev/null http://localhost:8080/enterprise-portal/health
             toggleGrid();
         });
 
-        // 15. Command Palette (⌘K)
-        const cmdModal = document.getElementById('cmdModal');
-        const cmdToggleBtn = document.getElementById('cmdToggleBtn');
-        const cmdInput = document.getElementById('cmdInput');
-        const cmdList = document.getElementById('cmdList');
-
-        function openCmd() {
-            playTactileClick(1200, 0.02);
-            cmdModal.classList.add('is-open');
-            cmdInput.value = '';
-            filterCmd('');
-            setTimeout(() => cmdInput.focus(), 80);
-        }
-
-        function closeCmd() {
-            cmdModal.classList.remove('is-open');
-        }
-
-        if (cmdToggleBtn) cmdToggleBtn.addEventListener('click', openCmd);
-        cmdModal.addEventListener('click', closeCmd);
-
+        // Keyboard Shortcuts ([G] for Blueprint Grid)
         window.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-                e.preventDefault();
-                cmdModal.classList.contains('is-open') ? closeCmd() : openCmd();
-            } else if (e.key === 'Escape' && cmdModal.classList.contains('is-open')) {
-                closeCmd();
-            } else if (e.key.toLowerCase() === 'g' && !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) {
+            if (e.key.toLowerCase() === 'g' && !['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) {
                 toggleGrid();
-            }
-        });
-
-        function filterCmd(q) {
-            const query = q.toLowerCase().trim();
-            cmdList.querySelectorAll('.cmd-option').forEach(opt => {
-                opt.style.display = opt.textContent.toLowerCase().includes(query) ? 'flex' : 'none';
-            });
-        }
-        cmdInput.addEventListener('input', (e) => filterCmd(e.target.value));
-
-        cmdList.addEventListener('click', (e) => {
-            const opt = e.target.closest('.cmd-option');
-            if (!opt) return;
-
-            playTactileClick(1100, 0.02);
-            closeCmd();
-            const href = opt.getAttribute('data-href');
-            const action = opt.getAttribute('data-action');
-
-            if (href) {
-                document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-            } else if (action === 'download-resume') {
-                const a = document.createElement('a');
-                a.href = 'Shubhankar_Negi_Resume.pdf';
-                a.download = 'Shubhankar_Negi_Resume.pdf';
-                a.click();
-            } else if (action === 'toggle-theme') {
-                const current = document.documentElement.dataset.theme;
-                setTheme(current === 'dark' ? 'light' : 'dark');
-            } else if (action === 'toggle-grid') {
-                toggleGrid();
-            } else if (action === 'toggle-matrix') {
-                toggleMatrixRain();
-
             }
         });
     
